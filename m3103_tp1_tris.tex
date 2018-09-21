@@ -1,0 +1,136 @@
+\documentclass[iutinfo,a4paper,10pt]{ustl-tdtp}
+%\usepackage[utf8]{inputenc}  
+%\usepackage[T1]{fontenc}
+%\usepackage{fontspec}
+\usepackage{listings}  
+
+
+\etablissement{\ustl}
+\formation{DUT info 2ème année}
+\matiere{Structures de données}
+\titre{TP 1 : Étude de quelques tris}
+\date{\annee{2018}--\annee{2019}}
+%\enseignant{}
+
+\newcommand{\case}{}%\rule[-.40cm]{0pt}{1cm}}
+\newcommand{\ident}[3]{(\texttt{#1},~\texttt{#2},~\texttt{#3})}
+\newcommand{\rien}{}
+
+\parindent 0cm
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+\paragraph{Résumé} Dans ce TP, vous implémenterez les tris vus en TD sous Eclipse et vous vérifierez leur bon fonctionnement grâce au framework de test JUnit.
+
+\section{Environnement de développement Java}
+
+
+\subsection{Création d'un projet Java sous Eclipse}
+\begin{itemize}
+\item[1] Créez un répertoire \texttt{sdd} dans votre répertoire personnel (homedir) et lancez Eclipse. Vérifiez les points suivants :
+paramétrez Eclipse de manière à ce qu'il utilise un espace de travail (workspace) différent de ce répertoire \texttt{sdd} (par défaut, c'est un répertoire workspace à la racine du homedir qui sera utilisé). C'est dans ce répertoire \texttt{sdd} que vous développerez vos travaux pratiques. 
+\item[2] Créez un nouveau projet Java \texttt{SDD}. Vérifiez que les sous-répertoires \texttt{src} et \texttt{bin} ont bien été créés dans \texttt{sdd}. Le premier accueillera les fichiers sources (.java) et le second, les fichiers de bytecode Java (.class) correspondants.
+\item[3] Ajoutez un nouveau \textbf{répertoire de sources} nommé \texttt{tests} au même niveau d’arborescence que \texttt{src}. Ce dernier contiendra vos fichiers sources de test.
+\item[4] Copiez la classe \texttt{Sort} fournie sur le site dans votre répertoire \texttt{sources/tp1}.
+\end{itemize}
+
+\subsection{Configuration de tests unitaires}
+
+\begin{itemize}
+\item[1] Dans l'explorateur de paquets, faites un clic droit sur la classe \texttt{Sort}.
+\item[2] Dans le menu contextuel, cliquez sur New – JUnit Test Case.
+\item[3] Choisissez le répertoire de sources \texttt{tests} et nommez la classe \texttt{SortTest}. Vérifiez que la classe sous test est bien \texttt{Sort}. Cliquez sur \textit{next} ne générez pas les signatures des méthodes de tests (elles vous sont fournies) et créez la classe.
+\item[4] Eclipse va proposer d'ajouter la bibliothèque de JUnit dans le \textit{buildpath} du projet, acceptez.
+\item[5] Remplacer le contenu de la classe \texttt{SortTest} fraîchement créée par celui de classe \texttt{SortTest} fournie dans les ressources du TP sur Moodle (Vous pouvez de manière alternative, importer le fichier \texttt{SortTest} depuis les menus).
+\end{itemize}
+
+
+\section{Implémentation pilotée par les tests}
+\paragraph{}
+Les tests ont été écrits pour vous. Vous allez devoir implémenter les méthodes de la classe Sort qui contiennent les algorithmes de tris vu en TD ainsi que des méthodes auxiliaires. Après chaque écriture de méthode, vous vérifierez que le test associé considère votre implémentation valide en faisant un clic droit sur la classe de test puis en choisissant  \textit{Run As - JUnit test} dans le menu contextuel. \newline
+
+
+
+\textbf{Question 1 : }\newline
+Écrivez une méthode \texttt{static void printArray(int [] tab)} qui affiche le contenu d'un tableau d'entiers. Cette méthode n'est soumise à aucun test mais vous servira si vous souhaitez vérifier les contenus de vos tableaux après tris. À l'avenir vous pourrez utiliser la méthode \texttt{toString} de la bibliothèque \texttt{Arrays}. \newline
+
+
+\textbf{Question 2 : }\newline
+Écrivez une méthode \texttt{static int [] generateRdmIntArray(int n, int min, int max)} qui retourne un tableau d'entiers de taille $n$ générés aléatoirement dans l'intervalle entre min et max. Pour rappel la méthode \texttt{Math.random()} retourne un \texttt{double} dans l'intervalle [0.0,1.0[.
+\newline
+
+\textbf{Question 3 :}\newline
+Implémentez les méthodes de tri suivantes vues en TD: 
+
+ \texttt{static void bubbleSort(int [] tab)}\newline
+ \texttt{static void selectSort(int [] tab)}\newline
+ \texttt{static void insertSort(int [] tab)}
+
+
+
+\section{Utilisation de compteurs}
+\paragraph{}
+Nous souhaitons maintenant compter le nombre de comparaisons et de permutations effectuées par les algorithmes de tris. Pour ce faire, nous utiliserons une classe \texttt{Counter} qui contiendra deux attributs déclarés privés : \texttt{comp} pour compter le nombre de comparaisons effectuées, et \texttt{perm} pour le nombre de permutations d'éléments.\newline
+
+
+\textbf{Question 6 : }\newline
+Écrivez une classe \texttt{Counter}. Ajoutez des méthodes pour incrémenter chacun des deux attributs, de $1$ puis de $n$ (méthodes incComp(), incComp(int
+n), incPerm() et incPerm(int i))\newline
+
+
+\textbf{Question 7 : } \newline
+Redéfinissez la méthode \texttt{toString} de manière à afficher "(nombre de comparaisons, nombre de permutations)" et ajoutez une méthode \texttt{reset} qui remet les attributs à 0.\newline
+
+
+\textbf{Question 8 : Utilisation de la classe Counter}\newline
+Réécrivez vos méthodes de tri de façon à afficher les valeurs des compteurs après l'exécution du tri. Éventuellement, prévoyez un paramètre pour activer/déactiver cet affichage.
+
+Lors de l'appel à ces fonctions, le compteur \texttt{c} sera incrémenté en conséquence lors des comparaisons entre éléments et
+déplacements d'éléments.\newline
+
+
+\textbf{Question 9 : } \newline
+À l'aide de vos compteurs, comparer le nombre de comparaisons et de permutations des différents algorithmes de tris implémentés. Comparez ces résultats avec les nombres théoriques vus en TD.
+
+\section{Tri d'objets}
+
+Il n'y a pas de relation d'ordre naturel entre deux objets, comme il peut y en avoir une entre les entiers. C'est le cas des chaînes de caractères vues en TD pour lesquelles l'implémentation  de la méthode \texttt{compareTo} de l'interface \texttt{Comparable<T>} permet cette comparaison.
+Vous savez sans doute que les collections Java comme les listes implémentent une méthode \texttt{sort} qui permet trier de manière optimisée ses éléments. Comme elle ne peut "deviner" la relation d'ordre entre deux objets, elle se base sur le résultat de la méthode \texttt{compareTo}. La méthode \texttt{sort} de la bibliothèque \texttt{Arrays} permet également de trier des tableaux d'objets.\newline
+
+\textbf{Question 10 : }\newline
+Créez une classe \texttt{Friend} avec deux attributs \texttt{name} et \texttt{age} et son constructeur. Cette classe doit implémenter l'interface \texttt{Comparable}.\newline
+
+\textbf{Questions 11 : }\newline
+Créez plusieurs instances de la classe \texttt{Friend} dans une méthode \texttt{main} avec différents noms et âges. Implémentez la méthode \texttt{compareTo} de manière à ce que la méthode \texttt{Arrays.sort()} de la bibliothèque Java trie votre tableau d'objets de type Friend dans l'ordre croissant des âges.\newline
+
+Pour rappel, si l'objet sur lequel la méthode \texttt{compareTo} est appelée est considéré comme inférieur à l'objet en argument, la méthode renvoie un entier négatif, 0 s'ils sont égaux et un entier positif s'il est plus grand.
+
+
+\section{Pour aller plus loin...}
+\textbf{Questions 12 : }\newline
+
+Écrivez la méthode \texttt{public int partition(int [] tab, int debut, int fin, int pivot)} qui partitionne le tableau  \texttt{tab} entre les indices \texttt{debut} et \texttt{fin}. Les valeurs de la partition du début de tableau sont les valeurs inférieures à la valeur pivot et les valeurs de l'autre partition  sont supérieures ou égales à la valeur \texttt{pivot}. La méthode retourne l'indice de la dernière valeur de la partition de début (celles des valeurs strictement inférieures à \texttt{pivot}).
+Attention, on ne demande pas que les partitions soient elles-mêmes triées, on ne cherche ici qu'à partitionner le tableau.\newline
+
+\textbf{Questions 13 : }\newline
+Le tri rapide ou Quicksort est un des algorithmes de tri les plus performants, il a été inventé par \textbf{Tony Hoare} en 1961. Documentez-vous et réfléchissez à l'implémentation d'un tri rapide à partir de la méthode \texttt{partition}.
+
+%\section{Travail à effectuer}
+%
+%\textbf{Question 1: Programmation}
+%Programmez une classe MaLib qui met en œuvre les fonctions de tri étudiées en TD. Cette classe devra donc contenir au moins les fonctions publiques suivantes :
+%public static void bubbleSort(int[] tab)
+%public static void selectSort(int[] tab)
+%public static void insertSort(int[] tab)
+%
+%Testez l'application avec un petit démonstrateur.
+
+
+%\section{JUnit}
+%
+%\texttt{javac -cp junit-4.11.jar:.  SortTest.java 
+%\texttt{java -cp :./junit-4.11.jar:./hamcrest-core-1.3.jar  org.junit.runner.JUnitCore  SortTest}
+
+
+\end{document}} 

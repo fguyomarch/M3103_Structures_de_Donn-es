@@ -1,0 +1,325 @@
+\documentclass[iutinfo,10pt]{ustl-tdtp}
+%\usepackage[utf8]{inputenc}  
+\usepackage[T1]{fontenc}
+\usepackage{fontspec}
+\usepackage{listings}  
+\usepackage{version}
+%\usepackage[a4paper]{geometry}
+\usepackage{hyperref}
+
+\etablissement{\ustl}
+\formation{DUT info 2ème année}
+\matiere{M3103 -- Algorithmique avancée}
+\titre{Contrôle TP du 22 novembre 2017}
+\date{\annee{2017}--\annee{2018}}
+%\enseignant{}
+
+%\includeversion{solution}
+\excludeversion{solution}
+
+\lstset{
+    breaklines=true
+}
+
+\newcommand{\case}{}%\rule[-.40cm]{0pt}{1cm}}
+\newcommand{\ident}[3]{(\texttt{#1},~\texttt{#2},~\texttt{#3})}
+\newcommand{\rien}{}
+
+\parindent 0cm
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+%\begin{center}
+%  Vous rendrez une archive (ZIP ou TGZ) sur le site Moodle. \\
+%  Il est extrêmement important de bien respecter les consignes de nommage.
+%Le barème est donné à titre indicatif.
+%\end{center}
+\hrule
+
+\begin{center}
+
+
+\end{center}
+
+Dans cet exercice, nous allons programmer une file de priorité à l'aide d'un tableau à deux dimensions. Il n'est, bien sûr, pas nécessaire de faire les questions dans l'ordre. Pour rappel, l'interface correspondant à cette file est la suivante:
+
+\begin{verbatim}
+public interface FilePriorite<E> extends Iterable<E> {
+    /** Removes all of the elements from this priority queue. */
+    void clear();
+	
+    /** Returns the comparator used to order the elements in this queue, 
+       or null if this queue is sorted according to the natural ordering of its elements. */
+    Comparator<? super E> comparator();
+
+    /** Inserts the specified element into this priority queue. */
+    boolean offer(E e);
+
+    /** Retrieves, but does not remove, the head of this queue, 
+        or returns null if this queue is empty. */
+    E peek();
+
+    /** Retrieves and removes the head of this queue, or returns null if this queue is empty. */
+    E poll();
+
+    /** Returns the number of elements in this collection. */
+    int size();
+
+    /** Returns <code>true</code> if this collection contains no elements. */
+    boolean isEmpty();
+}
+\end{verbatim}
+
+Dans ce type abstrait, la valeur à sortir (\texttt{poll}) est toujours la valeur la plus prioritaire ; pour nous, la valeur la plus prioritaire sera toujours la plus grande au sens de la comparaison déclarée à la construction de notre file de priorité.
+
+~\\
+
+L'implémentation choisie pour la file est une matrice carrée possédant la propriété suivante : pour toute case $(i,j)$ de la matrice, la valeur contenue dans cette case est supérieure aux valeurs contenues dans ses voisines de droite $(i,j+1)$ et du dessous $(i+1,j)$. Dans cette matrice, chaque ligne est donc en ordre décroissant de gauche à droite, et chaque colonne de haut en bas.
+
+De plus, le remplissage de cette matrice se fera toujours de gauche à droite, puis quand une ligne est pleine, en passant à la ligne suivante. De ce fait, la matrice ne peut avoir que des lignes pleines sauf éventuellement sa dernière ligne non vide.
+
+Voici par exemple une telle matrice:
+\begin{tabular}{|c|c|c|}
+\hline
+18 & 10 & 1 \\
+\hline
+14 & 5 & \\
+\hline
+&&\\
+\hline
+\end{tabular}
+
+~\\ \textbf{Question 1:} 
+Créez la classe \texttt{MatTas<E>} implémentant l'interface \texttt{FilePriorite<E>}, avec les attributs que vous jugerez nécessaires. Votre classe \textbf{doit} comporter un commentaire Javadoc qui précise le rôle de la classe que vous implémentez. Vous y \textbf{préciserez} en autre la façon que vous avez choisie pour connaître le nombre d'éléments présents dans votre \texttt{MatTas<E>} et si une case de la matrice peut être vide (\texttt{null}). N'oubliez pas le tag \texttt{@author} !
+
+
+~\\ \textbf{Question 2:} 
+Vous y ajouterez deux constructeurs:
+\begin{enumerate}
+    \item Un constructeur sans paramètre : la taille par défaut\footnote{Pensez à déclarer une constante !!!} de la matrice est alors $3 \times 3$. 
+    \item Un constructeur avec une taille indiquée.
+\end{enumerate}
+
+
+~\\ \textbf{Question 3:} 
+Programmez les méthodes de l'interface : \texttt{clear}, \texttt{isEmpty}, \texttt{size} et \texttt{peek}. 
+
+~\\ \textbf{Question 4:} 
+Pour la méthode \texttt{offer}, il faut ajouter la valeur sur la dernière ligne occupée, sur la première case libre. Il vous suffit juste de rétablir la propriété d'ordre entre les lignes et colonnes en permutant les valeurs avec son voisin de gauche ou du dessus. Réfléchissez à la permutation la plus intelligente en vous inspirant des tas (cf \href{https://www.iut-info.univ-lille1.fr/~guyomarc/M3103_SDD/m3103_cm7_tas.pdf}{CM7}), puis programmez la méthode \texttt{boolean offer(E e)}. Cette méthode retourne \texttt{false} s'il n'y a plus de place dans le conteneurs.
+
+~\\ \textbf{Question 5:} 
+Pour la méthode \texttt{poll}, la valeur de retour est la valeur située en première ligne et première colonne. Puis vous devez supprimer celle-ci du \texttt{MatTas} : vous la remplacez par la dernière valeur du \texttt{MatTas} (dernière ligne, dernière colonne occupée). Ensuite grâce à des permutations, vous rétablissez la propriété d'ordre du \texttt{MatTas}, de la même façon que vous supprimez une valeur d'un tas.
+
+~\\ \textbf{Indication:} \textit{Pour les questions 4 et 5, il peut-être très judicieux de définir deux méthodes privées pour vous assister dans la descente ou la remontée des valeurs. Ces deux méthodes peuvent retourner un couple d'index si vous retournez les coordonnées de la case choisie, ou plus simplement un booléen qui discriminera les deux cases potentielles pour la permutation. Les signatures de telles méthodes pourraient être :}
+\begin{verbatim}
+    coordOfMaxNeighbor(int i, int j)
+    coordOfMinNeighbor(int i, int j)
+\end{verbatim}
+\textit{ou bien :}
+\begin{verbatim}
+    isLeftTheLowest(int i, int j)
+    isRightTheHighest(int i, int j)
+\end{verbatim}
+
+~\\ \textbf{Question 6:} 
+Nous ajoutons maintenant la possibilité de décider de la notion de priorité à la construction de la \texttt{MatTas<E>}. Ajoutez un attribut de type \texttt{Comparator<? super E>} puis programmez une méthode \texttt{compare(E e1, E e2)} qui compare les deux éléments passés en paramètre. Cette méthode qui respecte la convention usuelle du Java pour les comparaisons, utilise le \texttt{Comparator} s'il n'est pas \texttt{null}, sinon elle utilise l'ordre naturel des éléments. Si aucune de ces deux possibilités n'est disponible, la méthode soulève une exception de type \texttt{ClassCastException}.
+
+~\\ \textbf{Question 7:} 
+Créez une classe interne qui implémente \texttt{Iterator<E>} et ajoutez une méthode \texttt{iterator()} qui retourne un itérateur sur la \texttt{MatTas}. Quels sont les attributs nécessaires pour désigner une case de la \texttt{MatTas<E>} ?
+
+~\\ \textbf{Question 8:} 
+Ajoutez deux constructeurs à votre \texttt{MatTas<E>} :
+\begin{enumerate}
+    \item Un constructeur de \texttt{MatTas<E>} à partir d'une autre \texttt{FilePriorite<E>}
+    \item Un constructeur de \texttt{MatTas<E>} à partir d'un ensemble ordonné de valeurs (\texttt{SortedSet<E>})
+\end{enumerate}
+Pour ces deux constructeurs, essayez de minimiser le nombre d'opérations nécessaires à la construction de votre file.
+
+~\\ \textbf{Pour rendre votre TP:} 
+\begin{enumerate}
+    \item Vérifiez que vous avez bien mis les commentaires javadoc.
+    \item Faites une archive ZIP ou TGZ \textbf{à votre nom} des fichiers sources \textbf{uniquement}.
+    \item Envoyer cette archive à votre enseignant de TD par email, avec comme entête [SDD] CTP. Les adresses mail sont les suivantes :
+\end{enumerate}
+
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{Groupe}     &  \textbf{Email} \\
+\hline
+    K & \href{mailto:Frederic.Guyomarch@univ-lille1.fr?subject=[SDD] CTP K}{Frederic.Guyomarch@univ-lille1.fr} \\
+    L & \href{mailto:Patricia.Everaere@univ-lille1.fr?subject=[SDD] CTP L}{Patricia.Everaere@univ-lille1.fr} \\
+    M & \href{mailto:Mikael.Mousse@gmail.com?subject=[SDD] CTP M}{Mikael.Mousse@gmail.com} \\
+    N & \href{mailto:Frederic.Guyomarch@univ-lille1.fr?subject=[SDD] CTP N}{Frederic.Guyomarch@univ-lille1.fr} \\
+\hline
+\end{tabular}
+\end{center}
+
+\newpage
+
+Pour illustrer les algorithmes d'ajout et de retrait, voici ce qu'il se passe alors de l'appel de \texttt{offer} pour les valeurs 5, 10, 1, 18, 14 à partir d'une file vide :
+
+\texttt{offer(5)}\\
+\begin{tabular}{|c|c|c|}
+\hline
+   5 &  &  \\
+\hline
+     &  &  \\
+\hline
+     &  &  \\
+\hline
+\end{tabular}
+
+\texttt{offer(10)}\\
+\begin{tabular}{|c|c|c|}
+\hline
+   5 & 10 &  \\
+\hline
+     &  &  \\
+\hline
+     &  &  \\
+\hline
+\end{tabular}
+$\rightarrow$
+\begin{tabular}{|c|c|c|}
+\hline
+    10 & 5 &  \\
+\hline
+     &  &  \\
+\hline
+     &  &  \\
+\hline
+\end{tabular}
+
+\texttt{offer(1)}\\
+\begin{tabular}{|c|c|c|}
+\hline
+    10 & 5 & 1 \\
+\hline
+     &  &  \\
+\hline
+     &  &  \\
+\hline
+\end{tabular}
+
+\texttt{offer(18)}\\
+\begin{tabular}{|c|c|c|}
+\hline
+    10 & 5 & 1 \\
+\hline
+    18 &  &  \\
+\hline
+     &  &  \\
+\hline
+\end{tabular}
+$\rightarrow$
+\begin{tabular}{|c|c|c|}
+\hline
+    18 & 5 & 1 \\
+\hline
+    10 &  &  \\
+\hline
+     &  &  \\
+\hline
+\end{tabular}
+
+\texttt{offer(14)}\\
+\begin{tabular}{|c|c|c|}
+\hline
+    18 & 5 & 1 \\
+\hline
+    10 & 14 &  \\
+\hline
+     &  &  \\
+\hline
+\end{tabular}
+$\rightarrow$
+\begin{tabular}{|c|c|c|}
+\hline
+    18 & 14 & 1 \\
+\hline
+    10 & 5 &  \\
+\hline
+     &  &  \\
+\hline
+\end{tabular}
+
+Puis le retrait de toutes les valeurs par appel à \texttt{poll}. La première illustration de chaque ligne correspond au remplacement du maximum par la dernière valeur de la \texttt{MatTas}, puis permutations pour rétablir la propriété d'ordre.
+
+\texttt{poll}\\
+\begin{tabular}{|c|c|c|}
+\hline
+    5 & 14 & 1 \\
+\hline
+    10 &  &  \\
+\hline
+     &  &  \\
+\hline
+\end{tabular}
+$\rightarrow$
+\begin{tabular}{|c|c|c|}
+\hline
+    14 & 5 & 1 \\
+\hline
+    10 &  &  \\
+\hline
+     &  &  \\
+\hline
+\end{tabular}
+
+\texttt{poll}\\
+\begin{tabular}{|c|c|c|}
+\hline
+    10 & 5 & 1 \\
+\hline
+     &  &  \\
+\hline
+     &  &  \\
+\hline
+\end{tabular}
+
+\texttt{poll}\\
+\begin{tabular}{|c|c|c|}
+\hline
+    1 & 5 &  \\
+\hline
+     &  &  \\
+\hline
+     &  &  \\
+\hline
+\end{tabular}
+$\rightarrow$
+\begin{tabular}{|c|c|c|}
+\hline
+    5 & 1 & \\
+\hline
+     &  &  \\
+\hline
+     &  &  \\
+\hline
+\end{tabular}
+
+\texttt{poll}\\
+\begin{tabular}{|c|c|c|}
+\hline
+    1 & &  \\
+\hline
+     &  &  \\
+\hline
+     &  &  \\
+\hline
+\end{tabular}
+
+\texttt{poll}\\
+\begin{tabular}{|c|c|c|}
+\hline
+     & &  \\
+\hline
+     &  &  \\
+\hline
+     &  &  \\
+\hline
+\end{tabular}
+\end{document}
+

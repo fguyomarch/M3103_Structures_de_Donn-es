@@ -1,0 +1,215 @@
+\documentclass[iutinfo,10pt]{ustl-tdtp}
+%\usepackage[utf8]{inputenc}  
+\usepackage[T1]{fontenc}
+\usepackage{fontspec}
+\usepackage{listings}  
+\usepackage{version}
+%\usepackage[a4paper]{geometry}
+
+\etablissement{\ustl}
+\formation{DUT info 2ème année}
+\matiere{M3103 -- Algorithmique avancée}
+\titre{Examen du 9 novembre 2017}
+\date{\annee{2017}--\annee{2018}}
+%\enseignant{}
+
+%\includeversion{solution}
+\excludeversion{solution}
+
+\lstset{
+    breaklines=true
+}
+
+\newcommand{\case}{}%\rule[-.40cm]{0pt}{1cm}}
+\newcommand{\ident}[3]{(\texttt{#1},~\texttt{#2},~\texttt{#3})}
+\newcommand{\rien}{}
+
+\parindent 0cm
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+\begin{center}
+  Documents et calculatrices interdits. \\
+  Les trois exercices sont indépendants et pas nécessairement en ordre de difficulté croissante. \\
+  Vous rédigerez \textbf{chaque} exercice sur une \textbf{copie séparée}.
+%Le barème est donné à titre indicatif.
+\end{center}
+\hrule
+
+\begin{center}
+
+
+\end{center}
+
+\subsection*{Exercice 1}
+
+Dans cet exercice, nous allons mettre des chaînes de caractères dans une table de hachage.
+
+~\\ \textbf{Question 1:} Pour le calcul du hashcode d'une chaîne, nous choisissons de faire la somme des rangs des lettres de la chaîne : le mot \texttt{a} aura pour hashcode 1, le mot \texttt{dut} aura pour hashcode 45\footnote{En effet, d:4, u:21, t:20... Cela donne un total de 45.}. Quels sont les hashcodes des mots suivants:
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+Chaîne & Valeur de hachage\\
+\hline 
+dut & \\
+structure &  \\
+de &  \\
+donnees &  \\
+iut &  \\
+informatique &  \\
+programmation &  \\
+hpc & \\
+java &  \\
+\hline
+\end{tabular}
+\end{center}
+
+~\\ \textbf{Question 2:} Programmez une fonction qui calcule ainsi le hashcode d'une chaîne de caractères.
+
+~\\ \textbf{Question 3:}  Nous considérons maintenant une table de hachage de taille 17, initialement vide. Les collisions sont gérées par sondage linéaire. Ajoutez successivement les valeurs suivantes à la table de hachage. \textbf{Pour chaque élément, vous préciserez à
+  quel index, il doit s'insérer, ainsi que les étapes de ce calcul.}
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+Élément & Index primaire & Sondages nécessaires\\
+\hline 
+dut & & \\
+structure & &  \\
+de & &  \\
+donnees & &  \\
+iut & &  \\
+informatique & &  \\
+programmation & &  \\
+hpc & & \\
+java & &  \\
+\hline
+\end{tabular}
+\end{center}
+
+~\\ \textbf{Question 4:} Puis supprimez la valeur \texttt{structure} en expliquant votre démarche.
+
+\vspace{2cm}
+\subsection*{Exercice 2}
+
+~\\ \textbf{Question 5:} Expliquez où se situe le maximum d'un sous-arbre dans un arbre binaire de recherche. Détaillez votre réponse en fonction des différentes configurations possibles.
+
+~\\ \textbf{Question 6:} À partir de l'arbre binaire de recherche vide, ajoutez successivement les valeurs suivantes : 32, 17, 21, 29, 34, 12, 41, 7, 27, 35, 44, 25 et 18. \textbf{Détaillez toutes les étapes !}
+
+~\\ \textbf{Question 7:} Puis supprimez les valeurs 17 puis 32 en détaillant aussi votre démarche.\\
+
+\newpage
+Votre classe d'arbre binaire de recherche est déclarée ainsi:
+\begin{verbatim}
+  public class BST<E> {
+      E element;
+      BST<E> left;
+      BST<E> right;
+  }
+\end{verbatim}
+
+~\\ \textbf{Question 8:} Programmez une méthode \texttt{isSubTreeSameRoot(BST<E> bst} adaptée à votre classe d'arbre de telle façon qu'elle retourne \texttt{true} si et seulement si l'instance courante (\texttt{this}) est un sous-arbre\footnote{un sous-arbre ${\displaystyle A}$ d'un arbre ${\displaystyle T}$ est un arbre tel que tous les sommets et toutes les arêtes de ${\displaystyle A}$ sont aussi des sommets ou des arêtes de ${\displaystyle T}$.} de l'arbre passé en paramètre (\texttt{bst}) et que les deux arbres aient même racine (au sens \texttt{equals}).
+
+~\\ \textbf{Question 9:} Programmez une méthode \texttt{isSubTree} adaptée à votre classe d'arbre de telle façon qu'elle retourne \texttt{true} si et seulement si l'instance courante est un sous-arbre de l'arbre passé en paramètre. Pensez à utiliser la méthode de la question précédente ainsi que tout autre méthode auxiliaire que vous jugerez judicieuse.
+
+\vspace{2cm}
+\subsection*{Exercice 3}
+
+Le but de cet exercice est d'implémenter une classe de tableau creux (\texttt{SparseArray<E>}) à l'aide d'une \texttt{Map<Integer, E>}. Un tableau creux est un tableau qui ne stocke que les indices où les valeurs sont non-nulles. Par exemple, le tableau 
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+3.14&0&0&0&0&0&2.81  \\
+\hline
+\end{tabular}
+serait stocké avec seulement deux associations : (0, 3.14) et (6, 2.81). Le premier élément correspond à l'indice, le second à la valeur stockée à cet indice.
+
+\begin{verbatim}
+  public interface SparseArray<E> {
+      /** Removes all key-value mappings from this SparseArray. */
+      void 	clear();
+      
+      /** Creates and returns a copy of this object. */
+      SparseArray<E> clone();
+      
+      /** Removes the mapping from the specified key, if there was
+      any. */
+      void 	delete(int key);
+      
+      /** Gets the Object mapped from the specified key, or null if 
+      no such mapping has been made. */
+      public E get(int i);
+      
+      /** Adds a mapping from the specified key to the specified value,
+      replacing the previous mapping from the specified key if there 
+      was one. */
+      public void put(int i, E e);
+  }
+\end{verbatim}
+
+
+~\\ \textbf{Question 10:} Écrivez une classe Java qui implémente cette interface. Toutes les associations index vers valeur seront stockées dans une \texttt{Map<Integer, E>}. 
+
+\vspace{0.5cm}
+\textbf{N.B.} N'oubliez pas le constructeur !
+\vspace{0.5cm}
+
+\newpage
+D'autre part voici un extrait de la JavaDoc de Map:
+
+\begin{center}
+\begin{tabular}{|r|l|}
+\hline
+ void	& clear() \\
+        &~~  Removes all of the mappings from this map (optional operation).\\
+ \hline
+boolean&	containsKey(Object key) \\
+        &~  Returns true if this map contains a mapping for the specified key.\\
+\hline
+ boolean&	containsValue(Object value) \\
+        &~~  Returns true if this map maps one or more keys to the specified value.\\
+\hline
+ Set<Map.Entry<K,V> >&	entrySet() \\
+        &~~  Returns a Set view of the mappings contained in this map.\\
+\hline
+ boolean&	equals(Object o) \\
+        &~~  Compares the specified object with this map for equality.\\
+\hline
+ V	&get(Object key) \\
+        &~~ Returns the value to which the specified key is mapped,\\
+        &~~ or null if this map contains no mapping for the key.\\
+\hline
+ int	&hashCode() \\
+        &~~  Returns the hash code value for this map.\\
+\hline
+ boolean&	isEmpty() \\
+        &~~  Returns true if this map contains no key-value mappings.\\
+\hline
+ Set<K>	&keySet() \\
+        &~~  Returns a Set view of the keys contained in this map.\\
+\hline
+ V	&put(K key, V value) \\
+        &~~  Associates the specified value with the specified key in this map \\
+        &~~ (optional operation).\\
+\hline
+ void	&putAll(Map<? extends K,? extends V> m) \\
+        &~~  Copies all of the mappings from the specified map to this map\\
+        &~~ (optional operation).\\
+\hline
+ V	&remove(Object key) \\
+        &~~  Removes the mapping for a key from this map if it is present (optional operation).\\
+\hline
+ int	&size() \\
+        &~~  Returns the number of key-value mappings in this map.\\
+\hline
+ Collection<V>&	values() \\
+          &~~ Returns a Collection view of the values contained in this map.\\
+\hline
+\end{tabular}
+\end{center}
+
+
+
+
+\end{document}
+

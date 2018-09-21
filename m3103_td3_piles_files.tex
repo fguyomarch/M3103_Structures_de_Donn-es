@@ -1,0 +1,288 @@
+\documentclass[iutinfo,a4paper,nocorrections,10pt]{ustl-tdtp}
+%\usepackage[utf8]{inputenc}  
+%\usepackage[T1]{fontenc}
+\usepackage{listings}  
+\usepackage{version}
+
+%\usepackage[a4paper]{geometry}
+
+
+\etablissement{\ustl}
+\formation{DUT info 2ème année}
+\matiere{Structures de données}
+\titre{TD 3 : Piles et Files}
+\date{\annee{2018}--\annee{2019}}
+%\enseignant{}
+
+%\includeversion{solution}
+%\excludeversion{solution}
+
+\newcommand{\case}{}%\rule[-.40cm]{0pt}{1cm}}
+\newcommand{\ident}[3]{(\texttt{#1},~\texttt{#2},~\texttt{#3})}
+\newcommand{\rien}{}
+
+\parindent 0cm
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+
+\section{Implémentation d'une pile par tableau}\label{implem}
+
+
+
+La pile est une structure de type LIFO (Last In, First Out), on accède uniquement au sommet et la première valeur accessible est la dernière ajoutée. Le type de données abstrait d'une pile définit les méthodes suivantes:
+
+\begin{itemize}
+\item \texttt{void push} : ajoute un élément au sommet de la pile. Cette méthode soulève une exception (\texttt{IllegalStateException}) si la pile est pleine. 
+\item \texttt{Truc pop} : retourne l’objet situé au sommet de la pile et le retire. Cette méthode soulève une exception (\texttt{NoSuchElementException}) si la pile est vide. 
+\item \texttt{boolean isEmpty} : teste si la pile est vide (retourne un booléen)
+\item \texttt{boolean isFull} : teste si la pile est pleine (retourne un booléen)
+\item \texttt{Truc peek} : retourne l'objet situé au sommet de la pile
+\end{itemize}. Cette méthode soulève aussi une exception si la pile est vide.
+\paragraph{}
+À partir de ces fonctions, nous allons implémenter une pile via la classe \texttt{Pile} et les méthodes associées. On se limite ici à des piles d'objets de type \texttt{Truc}, dont la taille est bornée par un entier \texttt{tailleMax}. On suppose que lorsque la pile est pleine, on ne peut plus empiler, et que lorsqu’elle est vide on ne peut pas dépiler. 
+On peut par exemple utiliser la classe suivante pour implémenter une pile avec un tableau :
+
+\begin{lstlisting}[language=Java]
+class Pile{
+	private int tailleMax ; // taille maximale de la pile
+	private Truc[] contenu ; // elements contenus dans la pile
+	private int sommet ; // position du sommet de la pile dans le tableau
+}
+
+\end{lstlisting}
+L'élément \texttt{contenu[sommet]} est l'élément qui se trouve en haut de la pile. Par convention, la pile est vide si sommet vaut -1.
+
+\question Écrivez un constructeur \texttt{Pile(int taille)} qui initialise une pile d’objets \texttt{Truc} avec une taille maximale donnée.
+
+\question Écrivez les méthodes \texttt{isEmpty}, \texttt{isFull}, \texttt{push}, \texttt{pop} et \texttt{peek}.
+
+\begin{correction}
+{\color{red}
+\begin{lstlisting}[language=Java]
+public class Pile{
+
+    private int tailleMax;
+    private Truc[] contenu;
+    private int sommet;
+
+    public Pile(int s){
+	tailleMax = s;
+	contenu = new Truc[tailleMax];
+	sommet = -1;
+    }
+    
+    public void push(Truc j){
+      if (isFull())
+        throw new IllegalStateException(); 
+	  contenu[++sommet] = j;
+    }
+    public Truc pop(){
+      if (isEmpty())
+        throw new NoSuchElementException(); 
+	  return contenu[sommet--];
+    }
+    public Truc peek(){
+      if (isEmpty())
+        throw new NoSuchElementException(); 
+	  return contenu[sommet];
+    }
+    public boolean isEmpty(){
+	  return sommet==-1;
+    }  
+    public boolean isFull(){
+	  return sommet==contenu.length-1;
+    } 
+    
+}
+\end{lstlisting}
+}
+
+\end{correction}
+
+%\section{Étude du fonctionnement d’une pile}
+%On considère une pile dans laquelle on entre successivement les entiers 1, 2, 3, 4. A chaque étape, on peut :
+%\begin{itemize}
+%\item soit sortir un entier de la pile si elle n’est pas vide
+%\item soit entrer l’entier i si le dernier entier entré est i-1 et si i est inférieur ou égal à 4.
+%\end{itemize} 
+%
+%
+%Au départ, la pile est vide. On arrête quand tous les entiers 1, 2, 3, 4 sont entrés et ressortis (la pile est de nouveau vide).
+%
+%\question Étudier les ordres de sortie possibles.
+%\question Combien y a-t-il de permutations de 1, 2, 3, 4 ?
+%
+%\begin{correction}
+%{\color{red}
+%Il y a 4! soit 24 permutations possibles de 1, 2, 3, 4. 
+%}
+%\end{correction}
+%
+%
+%\question Certaines permutations de 1, 2, 3, 4 sont impossibles : lesquelles et pourquoi ?
+
+\section{Utilisation d'une pile : vérification des délimiteurs}
+Nous allons étudier ici la vérification des délimiteurs dans une expression. On distingue ici trois délimiteurs, les parenthèses "(" et ")", les accolades "\{" et "\}" et les crochets "[" et "]". L'objectif est de déterminer si une chaîne de caractères (qui pourrait être un programme) est correctement délimitée, c'est-à-dire si chacun des délimiteurs ouvrant est suivi par un délimiteur fermant. Il s'agit d'une fonction implémentée dans vos chers compilateurs.
+
+\question Les exemples suivant sont-ils bien délimitées?
+\begin{itemize}
+\item[] a(b)c 
+\begin{correction}{\color{red}Oui retour -1}\end{correction}
+\item[] a[b(c)\}d 
+\begin{correction}{\color{red}Non retour 6}\end{correction}
+\item[] \{a(b[c[d))]e]\} 
+\begin{correction}{\color{red}Non retour 8}\end{correction}
+\item[] \{a(b(d[d]))e\}
+\begin{correction}{\color{red}Oui retour -1}\end{correction}
+\item[] (a[b]c
+\begin{correction}{\color{red}Non retour 6}\end{correction}
+\end{itemize}
+
+\question Est-il possible de vérifier une chaîne uniquement en comptant les délimiteurs? Si non, proposez un contre-exemple. Écrivez la méthode \texttt{boolean verifDelim(String s)} qui vérifie si la chaîne est correctement délimitée sans utiliser de pile. Cette méthode ne considérera que les délimiteurs "(" et ")".
+
+\begin{correction}
+{\color{red}
+Non par exemple l'expression ")a)b)c(d(e(" serait considérée valide.
+
+\begin{lstlisting}[language=Java]
+boolean verifDelim(String s){
+ int openCount = 0; 
+ for (int i = 0; i < s.length(); ++i) {
+   char ch = s.charAt(i);
+   if (ch == '(') {
+    ++openCount;
+   }
+   else if (ch == ')') {
+    if (openCount <= 0) {
+      return false
+    }
+    --openCount;
+   }
+  }
+ return openCount == 0;
+}
+\end{lstlisting}
+
+}
+
+\end{correction}
+
+\question En vous inspirant des actions réalisées sur les compteurs, écrivez la méthode \texttt{boolean verifDelimStack(String s)} qui réalise vérification de délimiteurs à partir d'une pile. Vous utiliserez la classe \texttt{Pile} écrite en Section~\ref{implem}, en remplaçant le type Truc par le type adéquat.
+
+\question Bonus. Modifiez votre algorithme de manière à afficher les indices des caractères qui posent problème, par exemple lorsqu'il manque un délimiteur fermant ou qu'il ne s'agit pas du délimiteur fermant correspondant au délimiteur ouvrant.
+
+\begin{correction}
+{\color{red}
+
+\begin{lstlisting}[language=Java]
+boolean verifDelimStack(String s){
+ Deque<Character> p = new ArrayList(); 
+ for (int i = 0; i < s.length(); ++i) {
+   char ch = s.charAt(i);
+   if (isO(ch)) {
+    p.push(ch);
+   }
+   else if (isC(ch)) {
+    if (p.isEmpty()) {
+      return false
+    }
+    if (!isP(p.pop(), ch)
+      return false;
+   }
+  }
+ return p.isEmpty();
+}
+
+boolean isP(char o, char c){
+    return o=='(' && c==')'
+        || o=='[' && c==']'
+        || o=='{' && c=='}';
+        
+boolean isO(char o){
+    return o=='(' || o=='[' || o=='{';
+}
+
+boolean isC(char c){
+    return o==')' || o==']' || o=='}';
+}
+
+
+\end{lstlisting}
+
+}
+\end{correction}
+
+\section{Implémentation d'une File avec un tableau} 
+
+Pour la file (structure FIFO : First In, First Out), on commence par dépiler le premier élément mis dans la file. On peut
+par exemple utiliser la classe suivante pour implémenter une file avec un tableau :
+
+
+\begin{lstlisting}[language=Java]
+class File{
+  private int tailleMax ; // taille maximale de la file
+  private Truc[] contenu ; // elements contenus dans la file
+  private int queue ; // position de la base de la file dans le tableau
+  private int tete ; // position du "sommet" de la file dans le tableau
+  private int nItems ; // pour ne pas "perdre" une case
+                      // et plus simple que de mettre 
+                      // juste un booléen
+
+  public boolean isEmpty() { ...}
+  public boolean isFull() { ...}
+  public boolean offer(Truc t) {...}
+  public Truc poll() {...}
+}
+
+\end{lstlisting}
+
+\question Écrivez les méthodes \texttt{isEmpty}, \texttt{isFull}, \texttt{offer} et \texttt{poll}.
+
+\question Si votre première version de la file fonctionnait avec des décalages, réfléchissez à une solution sans.
+
+\begin{correction}
+{\color{red}
+\begin{lstlisting}[language=Java]
+	public File(int taille){
+		contenu = new Truc[taille];
+		queue = taille-1;
+		tete = 0;
+		tailleMax = taille;
+		nItems = 0;
+		
+	}
+	public boolean isEmpty() {
+		return nItems==0;
+	}
+	public boolean isFull() {
+		return nItems==tailleMax;
+	}
+	public void offer(Truc t) {
+		if(estPleine())
+		  throw new IllegalStatementException();
+        if(++queue == tailleMax) //Aspect circulaire
+				queue=0;
+		contenu[queue] = t;
+		++nItems;
+		}
+	}
+	
+	public Truc poll() {
+		if(isEmpty())
+		    throw new NoSuchElementException();
+		Truc tmp = contenu[tete++];
+		if(tete==tailleMax) //Aspect circulaire
+			tete=0; 
+		--nItems;
+		return tmp;
+	}
+	
+\end{lstlisting}
+
+}
+\end{correction}
+
+\end{document}
+

@@ -1,0 +1,43 @@
+\DeclareOptionBeamer{compress}{\beamer@compresstrue}
+\ProcessOptionsBeamer
+
+\mode<presentation>
+
+\useoutertheme[footline=authortitle]{miniframes}
+
+
+% A little hack to display frame counter:
+%\defbeamertemplate*{footline}{Idorobots theme}
+%{%
+%  \begin{beamercolorbox}[colsep=1.5pt]{upper separation line foot}
+%  \end{beamercolorbox}
+%  \begin{beamercolorbox}[ht=2.5ex,dp=1.125ex,%
+%    leftskip=.3cm,rightskip=.3cm plus1fil]{author in head/foot}%
+%    \leavevmode{\usebeamerfont{author in head/foot}\insertshortauthor}%
+%    \hfill%
+%    {\usebeamerfont{institute in head/foot}\usebeamercolor[fg]{institute in head/foot}\insertshortinstitute}
+%  \end{beamercolorbox}%
+%  \begin{beamercolorbox}[ht=2.5ex,dp=1.125ex,%
+%    leftskip=.3cm,rightskip=.3cm plus1fil]{title in head/foot}%
+%    {\usebeamerfont{title in head/foot}\insertshorttitle}%
+%    \hfill%
+%    {\usebeamerfont{title in head/foot}\insertframenumber/\inserttotalframenumber}
+%  \end{beamercolorbox}%
+%  \begin{beamercolorbox}[colsep=1.5pt]{lower separation line foot}
+%  \end{beamercolorbox}
+%}
+
+\useinnertheme{circles}
+\usecolortheme{whale}
+\usecolortheme{orchid}
+
+\definecolor{beamer@blendedblue}{rgb}{0.137,0.466,0.741}
+
+\setbeamercolor{structure}{fg=beamer@blendedblue}
+\setbeamercolor{titlelike}{parent=structure}
+\setbeamercolor{frametitle}{fg=black}
+\setbeamercolor{title}{fg=black}
+\setbeamercolor{item}{fg=black}
+
+\mode
+<all>

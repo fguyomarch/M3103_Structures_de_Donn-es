@@ -1,0 +1,88 @@
+\documentclass[iutinfo,a4paper,nocorrections,10pt]{ustl-tdtp}
+%\usepackage[utf8]{inputenc}  
+%\usepackage[T1]{fontenc}
+\usepackage{listings}  
+\usepackage{version}
+\usepackage{tikz}
+
+
+%\usepackage[a4paper]{geometry}
+
+
+\etablissement{\ustl}
+\formation{DUT info 2ème année}
+\matiere{Structures de données}
+\titre{TP 5 : Tables de Hachage}
+\date{\annee{2017}--\annee{2018}}
+%\enseignant{}
+
+%\includeversion{solution}
+\excludeversion{solution}
+
+\lstset{
+    breaklines=true
+}
+
+\newcommand{\case}{}%\rule[-.40cm]{0pt}{1cm}}
+\newcommand{\ident}[3]{(\texttt{#1},~\texttt{#2},~\texttt{#3})}
+\newcommand{\rien}{}
+
+\parindent 0cm
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+Les tables de hachage (\textit{HashMap} en Java) permettent une implémentation efficace d'une table d'association. L'idée est la suivante : pour chaque clé k, on calcule un entier de hachage h(k) compris entre 0 et n-1 (n est la taille de la table). On utilise ensuite un tableau de taille n pour stocker les couples (clés, valeurs).
+
+Le but est ici de stocker des mots (qui constituent les clés) en leur associant une valeur entière positive représentant la fréquence d'apparition du mot dans un texte donné. La clé est donc un objet de type \texttt{String}, la valeur un entier de type \texttt{Integer}.
+
+Pour cela, on implémentera de deux façons différentes l'interface suivante:
+
+
+\begin{verbatim}
+public interface HashTable {
+    public Integer put(String key, Integer value);
+    public Integer get(String key);
+    public boolean remove(String key);
+    public boolean contains(String key);
+    public int size();
+}
+\end{verbatim}
+
+\question{Écrivez une classe\footnote{Vous pourriez aussi utiliser la classe \texttt{AbstractMap.SimpleEntry<String, Integer>}} \texttt{HashCouple} qui contient le couple
+  (clé, information), et qui implémente l'interface
+  \texttt{Map.Entry<String, Integer>}. Pour l'instant, la méthode \texttt{hashCode()}
+  retournera le HashCode usuel de la clé\footnote{Pensez à redéfinir le \texttt{equals} en conséquence.} (qui peut être négatif en Java).} \\
+
+\question{Écrivez une classe \texttt{HashTableTest} qui servira de classe de test pour vos deux implémentations de \texttt{HashTable}. Vous vous inspirerez des classes de tests fournies pour les TP précédents.} \\
+
+\question{Première implémentation: par chaînage. }
+
+\begin{enumerate}
+%\item Écrivez une classe \texttt{MaListe} qui contiendra les couples (clé, informations) pour un indice du tableau donné. La représentation de la liste est récursive, il y a donc 2 attributs dans cette classe: un objet de type \texttt{HashCouple} et un objet de type  \texttt{MaListe}. Il faut prévoir des constructeurs, une méthode d'ajout, de retrait et d'affichage.
+
+\item Écrivez une classe \texttt{Chainage} qui implémente l'interface \texttt{HashTable}. Elle encapsule un tableau de \texttt{LinkedList} qui vont contenir les couples dont la clé a la même valeur de hachage. Si aucune taille n'est précisée, le tableau sera de taille \texttt{DEFAULT\_SIZE}.
+
+\begin{verbatim}
+public class Chainage implements HashTable {
+    public static final int DEFAULT_SIZE = 16;
+    LinkedList<HashCouple>[] table;
+}
+\end{verbatim}
+
+\item Écrivez une méthode \texttt{toString()} qui permet l'affichage de la table de hachage comme toute collection Java : les éléments de la table séparés par des virgules et encadrés par des crochets.
+
+\item Récupérez les mots d'un texte et insérez-les dans votre table de hachage. La valeur associée pourrait par exemple être le nombre d'occurrences du mot dans le texte.
+
+\end{enumerate}
+\question{Deuxième implémentation: par adressage ouvert. }
+\begin{enumerate}
+\item Écrivez à présent une classe \texttt{Adressage} qui implémente l'interface \texttt{HashTable}. Elle encapsule un tableau de \texttt{HashCouple}, et traite les collisions par sondage linéaire.
+
+\item Récupérez les mots d'un texte et insérez les de la même façon dans votre table de hachage. Que constatez-vous par rapport à la première implémentation?
+
+\item Testez maintenant une autre méthode de hachage (par exemple la valeur numérique correspondant à la position dans l'alphabet de la première lettre du mot). Quelles sont les modifications dans la répartition des données ?
+\end{enumerate}
+
+\end{document}
+

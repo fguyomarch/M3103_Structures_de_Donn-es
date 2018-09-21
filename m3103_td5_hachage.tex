@@ -1,0 +1,236 @@
+\documentclass[iutinfo,a4paper,10pt]{ustl-tdtp}
+%\usepackage[utf8]{inputenc}  
+%\usepackage[T1]{fontenc}
+\usepackage{fontspec}
+\usepackage{listings}  
+\usepackage{version}
+\usepackage{tikz}
+
+
+%\usepackage[a4paper]{geometry}
+
+
+\etablissement{\ustl}
+\formation{DUT info 2ème année}
+\matiere{Structures de données}
+\titre{TD : Tables de hachage}
+\date{\annee{2017}--\annee{2018}}
+%\enseignant{}
+
+\includeversion{solution}
+%\excludeversion{solution}
+
+\lstset{
+    breaklines=true
+}
+
+\newcommand{\case}{}%\rule[-.40cm]{0pt}{1cm}}
+\newcommand{\ident}[3]{(\texttt{#1},~\texttt{#2},~\texttt{#3})}
+\newcommand{\rien}{}
+
+\parindent 0cm
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+
+\subsection*{Exercice 1}
+
+~\\ \textbf{Question 1:}
+Quelle est la définition d'une fonction de hachage ?
+
+\begin{solution}
+{\color{red}
+La caractéristique principale d'une fonction de hachage est
+  de produire un condensé de l'objet passé en paramètre. Ce condensé
+  est de taille fixe, dont la valeur diffère suivant la fonction
+  utilisée. Cette fonction doit se calculer efficacement. 
+}
+\end{solution}
+
+~\\ \textbf{Question 2:}
+Expliquez rapidement ce qu'est un sondage linéaire dans une table
+de hachage. Quel est le problème du sondage linéaire ?
+
+\begin{solution}
+{\color{red}
+Cette méthode permet de gérer les collisions dans une table
+  de hachage : si on a une collision, on parcourt le tableau à partir
+  de l'indice h(k) jusqu'à trouver une case libre. Les indices
+  parcourus peuvent être écrits sous la forme suivante, avec M la
+  taille du tableau, h la fonction de hachage et i le nombre de
+  sondages effectués:
+$$ indice = \left( h(k) + i \right) ~mod~ M .$$
+
+Le problème de cette méthode est la formation de clusters de
+  valeurs, ce qui augmente le coût des traitements.  
+}
+\end{solution}
+
+ ~\\ \textbf{Question 3:} Nous considérons maintenant une table de
+hachage de taille 11, initialement vide. Les collisions sont gérées
+par sondage linéaire. Ajoutez successivement les valeurs suivantes à
+la table de hachage. \textbf{Pour chaque élément, vous préciserez à
+  quel index, il doit s'insérer, ainsi que les étapes de ce calcul.}
+\begin{center}
+\begin{tabular}{|c|c|l|}
+\hline
+Élément & Valeur de hachage & index de sondage\\
+\hline 
+A & 59 &\\
+B & 7 &\\
+C & 28 &\\
+D & 21 &\\
+E & 17 &\\
+F & 95 &\\
+G & 50 &\\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{solution}
+{\color{red}
+Le premier index de sondage est le reste de la division euclidienne de
+la valeur de hachage par la taille du tableau, à savoir 11. Si il y a
+collision, on sonde linéairement à droite par pas de 1.
+
+
+\begin{center}
+\begin{tabular}{|c|c|l|}
+\hline
+Élément & Valeur de hachage & index de sondage\\
+\hline 
+A & 59 & 4\\
+B & 7 & 7\\
+C & 28 & 6 \\
+D & 21 & 10\\
+E & 17 & 6 $\rightarrow$ 7 $\rightarrow$ 8 \\
+F & 95 & 7 $\rightarrow$ 8 $\rightarrow$ 9 \\
+G & 50 & 6 $\rightarrow$ 7 $\rightarrow$ 8 $\rightarrow$ 9 $\rightarrow$
+         10 $\rightarrow$ 0 \\
+\hline
+\end{tabular}
+\end{center}
+
+\textit{ Pour un résultat final :
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+0&1&2&3&4&5&6&7&8&9&10\\
+\hline
+G&&&&A&&C&B&E&F&D\\
+\hline
+\end{tabular}
+\end{center}
+}
+}
+\end{solution}
+
+~\\ \textbf{Question 4:} Puis supprimez la valeur B en expliquant
+votre démarche.
+
+\begin{solution}
+{\color{red}
+On supprime la valeur en la remplaçant par une valeur du
+  cluster ayant une valeur de hachage inférieur ou égale. On répète
+  cette opération jusqu'à la fin du cluster.
+
+\textit{ Pour un résultat final :
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+0&1&2&3&4&5&6&7&8&9&10\\
+\hline
+&&&&A&&C&E&F&G&D\\
+\hline
+\end{tabular}
+\end{center}
+}
+}
+\end{solution}
+
+~\\ \textbf{Question 5:} Programmez les algorithmes d'insertion et de suppression dans la table de hachage en adressage ouvert (dans le cas du sondage linéaire).
+
+\begin{solution}
+{\color{red}
+\begin{lstlisting}[language=Java]
+private int next(int i){
+    return i==table.length-1?0:i+1;
+}
+
+public boolean add(E e){
+    int indexPrimaire = e.hashCode() \% table.length;
+    int i = indexPrimaire;
+    while(table[i]!=null 
+           && !table[i].equals(e)
+           && next(i)!=indexPrimaire){
+        i=next(i);
+    }
+    if(table[i]!=null){
+        if(table[i].equals(e))
+            return false;
+        throw new IllegalStateException();
+    }
+    table[i] = e;
+    return true;
+}
+\end{lstlisting}
+}
+\end{solution}
+
+
+\subsection*{Exercice 2}
+
+~\\ \textbf{Question 1:} Nous considérons une table de hachage en adressage ouvert de taille 11, et la fonction de hachage $h(k) = k~mod~11$. Insérez successivement les clés 11, 22, 31, 4, 15, 28, 17, 88 et 59 dans la table en utilisant un sondage linéaire. \textbf{Expliquez pour chaque clé le calcul de l'index d'insertion.}
+
+\begin{solution}
+{\color{red}
+\textit{ Résultat final :
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+0&1&2&3&4&5&6&7&8&9&10\\
+\hline
+11&22&88&&4&15&28&17&59&31&\\
+\hline
+\end{tabular}
+\end{center}
+}
+}
+\end{solution}
+
+~\\ \textbf{Question 2:} Même question en résolvant les collisions par sondage quadratique.
+
+\begin{solution}
+{\color{red}
+%On utilise la fonction de sondage quadratique $i + i^2$.
+\textit{ Résultat final :
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+0&1&2&3&4&5&6&7&8&9&10\\
+\hline
+11&22&&88&4&15&28&17&&31&59\\
+\hline
+\end{tabular}
+\end{center}
+}
+}
+\end{solution}
+
+~\\ \textbf{Question 3:} Même question en résolvant les collisions par chaînage.
+
+\begin{solution}
+{\color{red}
+\textit{ Résultat final :
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+0&1&2&3&4&5&6&7&8&9&10\\
+\hline
+11|22|88&&&&4|15|59&&28|17&&&31&\\
+\hline
+\end{tabular}
+\end{center}
+}
+}
+\end{solution}
+
+
+\end{document}
+

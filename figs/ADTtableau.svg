@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="ADTtableau.svg">
+  <defs
+     id="defs4">
+    <marker
+       inkscape:stockid="Arrow1Mstart"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Mstart"
+       style="overflow:visible">
+      <path
+         id="path3838"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt"
+         transform="scale(0.4) translate(10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lstart"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Lstart"
+       style="overflow:visible">
+      <path
+         id="path3832"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt"
+         transform="scale(0.8) translate(12.5,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Mstart"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Mstart-7"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path3838-6"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(0.4,0,0,0.4,4,0)" />
+    </marker>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.98994949"
+     inkscape:cx="263.54733"
+     inkscape:cy="489.99357"
+     inkscape:document-units="px"
+     inkscape:current-layer="g3820"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1176"
+     inkscape:window-x="0"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g4713"
+       transform="matrix(0.52943203,0,0,0.52943203,22.930556,219.53398)">
+      <g
+         id="g3820"
+         transform="translate(-3.8159858,-106.8476)">
+        <rect
+           style="fill:#115895;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:2.63703418;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+           id="rect3001"
+           width="235.64867"
+           height="99.934395"
+           x="260.89777"
+           y="212.39499"
+           ry="11.856623" />
+        <text
+           xml:space="preserve"
+           style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+           x="380.61664"
+           y="251.64789"
+           id="text3771"
+           sodipodi:linespacing="125%"><tspan
+             sodipodi:role="line"
+             id="tspan3773"
+             x="380.61664"
+             y="251.64789"
+             style="text-align:center;text-anchor:middle;fill:#ffffff;fill-opacity:1">TDA</tspan><tspan
+             sodipodi:role="line"
+             x="380.61664"
+             y="301.64789"
+             id="tspan3775"
+             style="text-align:center;text-anchor:middle;fill:#ffffff;fill-opacity:1">Tableau</tspan></text>
+      </g>
+      <path
+         inkscape:connector-curvature="0"
+         id="path3826"
+         d="M 343.35855,223.69098 C 53.708559,651.93175 53.708559,649.33632 53.708559,649.33632"
+         style="fill:none;stroke:#000000;stroke-width:5.66644976;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:url(#Arrow1Mstart)" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path3826-4"
+         d="m 456.70969,228.87259 c 219.08929,414.30537 218.45314,415.5004 218.45314,415.5004"
+         style="fill:none;stroke:#000000;stroke-width:5.66644976;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:url(#Arrow1Mstart)" />
+      <g
+         id="g4710"
+         transform="matrix(1.2482221,0,0,1,-61.480154,217.51119)">
+        <rect
+           style="fill:#418dce;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:2.63703418;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+           id="rect3001-1"
+           width="235.64867"
+           height="99.934395"
+           x="41.46138"
+           y="431.68069"
+           ry="11.856623" />
+      </g>
+      <text
+         sodipodi:linespacing="125%"
+         id="text4664"
+         y="690.04578"
+         x="141.16417"
+         style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         xml:space="preserve"><tspan
+           style="font-size:36px;text-align:center;text-anchor:middle;fill:#ffffff;fill-opacity:1"
+           y="690.04578"
+           x="146.89464"
+           id="tspan4666"
+           sodipodi:role="line">SDD Tableau </tspan><tspan
+           style="font-size:36px;text-align:center;text-anchor:middle;fill:#ffffff;fill-opacity:1"
+           id="tspan4668"
+           y="735.04578"
+           x="141.16417"
+           sodipodi:role="line">non ordonné</tspan></text>
+      <flowRoot
+         xml:space="preserve"
+         id="flowRoot3810"
+         style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         transform="matrix(1.8888166,0,0,1.8888166,13.928172,-424.19938)"><flowRegion
+           id="flowRegion3812"><rect
+             id="rect3814"
+             width="205.06096"
+             height="81.822357"
+             x="462.64987"
+             y="362.42798" /></flowRegion><flowPara
+           id="flowPara3816"
+           style="font-size:20px">- Insertion</flowPara><flowPara
+           style="font-size:20px"
+           id="flowPara3824">- Recherche</flowPara><flowPara
+           style="font-size:20px"
+           id="flowPara3832">- Suppression</flowPara><flowPara
+           style="font-size:20px"
+           id="flowPara3828">-  </flowPara><flowPara
+           style="font-size:20px"
+           id="flowPara3820">- </flowPara><flowPara
+           style="font-size:20px"
+           id="flowPara3822" /><flowPara
+           style="font-size:20px"
+           id="flowPara3830" /></flowRoot>      <path
+         style="fill:none;stroke:#1bc327;stroke-width:6.61085796;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:13.22171611, 6.61085806;stroke-dashoffset:0"
+         d="m 384.7308,462.60787 0,475.09024"
+         id="path3834"
+         inkscape:connector-curvature="0" />
+      <flowRoot
+         xml:space="preserve"
+         id="flowRoot3836"
+         style="fill:black;stroke:none;stroke-opacity:1;stroke-width:1px;stroke-linejoin:miter;stroke-linecap:butt;fill-opacity:1;font-family:Sans;font-style:normal;font-weight:normal;font-size:40px;line-height:125%;letter-spacing:0px;word-spacing:0px"><flowRegion
+           id="flowRegion3838"><rect
+             id="rect3840"
+             width="131.31982"
+             height="67.680222"
+             x="21.213203"
+             y="634.15906" /></flowRegion><flowPara
+           id="flowPara3842" /></flowRoot>      <text
+         xml:space="preserve"
+         style="font-size:75.55266571px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         x="110.26669"
+         y="826.61279"
+         id="text3844"
+         sodipodi:linespacing="125%"><tspan
+           sodipodi:role="line"
+           x="110.26669"
+           y="826.61279"
+           style="font-size:33.99869919px;text-align:center;text-anchor:middle"
+           id="tspan3874">-Ajout simple{..}</tspan><tspan
+           sodipodi:role="line"
+           x="115.6786"
+           y="869.11115"
+           style="font-size:33.99869919px;text-align:center;text-anchor:middle"
+           id="tspan3878">-Recherche </tspan><tspan
+           sodipodi:role="line"
+           x="110.26669"
+           y="911.60956"
+           style="font-size:33.99869919px;text-align:center;text-anchor:middle"
+           id="tspan3848">séquentielle{...}</tspan><tspan
+           sodipodi:role="line"
+           x="110.26669"
+           y="954.10791"
+           style="font-size:33.99869919px;text-align:center;text-anchor:middle"
+           id="tspan3880">-Suppresion{..}</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-size:75.55266571px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         x="649.25848"
+         y="830.17462"
+         id="text3844-3"
+         sodipodi:linespacing="125%"><tspan
+           sodipodi:role="line"
+           x="649.25848"
+           y="830.17462"
+           style="font-size:33.99869919px;text-align:center;text-anchor:middle"
+           id="tspan3874-9">-Ajout avec décalage{..}</tspan><tspan
+           sodipodi:role="line"
+           x="654.67041"
+           y="872.67297"
+           style="font-size:33.99869919px;text-align:center;text-anchor:middle"
+           id="tspan3878-1">-Recherche </tspan><tspan
+           sodipodi:role="line"
+           x="649.25848"
+           y="915.17139"
+           style="font-size:33.99869919px;text-align:center;text-anchor:middle"
+           id="tspan3848-6">dichotomique{..}</tspan><tspan
+           sodipodi:role="line"
+           x="649.25848"
+           y="957.66974"
+           style="font-size:33.99869919px;text-align:center;text-anchor:middle"
+           id="tspan3880-3">-Suppresion{..}</tspan></text>
+      <g
+         id="g3974"
+         transform="translate(78.227679,-57.239787)">
+        <g
+           transform="matrix(1.2482221,0,0,1,355.06621,270.97489)"
+           id="g4710-4">
+          <g
+             id="g3971">
+            <rect
+               style="fill:#418dce;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:2.63703418;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+               id="rect3001-1-0"
+               width="235.64867"
+               height="99.934395"
+               x="41.46138"
+               y="431.68069"
+               ry="11.856623" />
+          </g>
+        </g>
+        <g
+           id="g4763"
+           transform="translate(-19.70768,270.20991)">
+          <text
+             xml:space="preserve"
+             style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+             x="572.41132"
+             y="469.51779"
+             id="text4664-5"
+             sodipodi:linespacing="125%"><tspan
+               sodipodi:role="line"
+               id="tspan4666-1"
+               x="578.14178"
+               y="469.51779"
+               style="font-size:36px;text-align:center;text-anchor:middle;fill:#ffffff;fill-opacity:1">SDD Tableau </tspan><tspan
+               sodipodi:role="line"
+               x="572.41132"
+               y="514.51782"
+               id="tspan4668-7"
+               style="font-size:36px;text-align:center;text-anchor:middle;fill:#ffffff;fill-opacity:1">ordonné</tspan></text>
+        </g>
+      </g>
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="569.51874"
+       y="302.82898"
+       id="text4749"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4751"
+         x="569.51874"
+         y="302.82898"
+         style="font-size:36px;text-align:center;text-anchor:middle">Spécification</tspan><tspan
+         sodipodi:role="line"
+         x="569.51874"
+         y="339.85498"
+         id="tspan4761"
+         style="font-size:28px;text-align:center;text-anchor:middle">abstraite</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="603.03741"
+       y="561.42798"
+       id="text4753"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4755"
+         x="603.03741"
+         y="561.42798"
+         style="font-size:36px;text-align:center;text-anchor:middle">Implémentation</tspan><tspan
+         sodipodi:role="line"
+         x="603.03741"
+         y="598.45404"
+         id="tspan4759"
+         style="font-size:28px;text-align:center;text-anchor:middle">concrète</tspan><tspan
+         sodipodi:role="line"
+         x="603.03741"
+         y="633.45404"
+         id="tspan4757"
+         style="text-align:center;text-anchor:middle" /></text>
+    <path
+       style="fill:none;stroke:#c30d0d;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:10, 5;stroke-dashoffset:0"
+       d="m 78.791898,449.30111 599.020452,0"
+       id="path4784"
+       inkscape:connector-curvature="0" />
+  </g>
+</svg>

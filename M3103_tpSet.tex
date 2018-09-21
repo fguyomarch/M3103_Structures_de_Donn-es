@@ -1,0 +1,71 @@
+\documentclass[iutinfo,a4paper,nocorrections,10pt]{ustl-tdtp}
+%\usepackage[utf8]{inputenc}
+%\usepackage[a4paper]{geometry}
+
+\etablissement{\ustl}
+\formation{DUT info 2ème année}
+\matiere{Structures de données}
+\titre{TP 4 : Implémentation d'un Ensemble}
+\date{\annee{2017}--\annee{2018}}
+
+\parindent 0cm
+\begin{document}
+\includeversion{solution}
+%\excludeversion{solution}
+
+\maketitle
+\thispagestyle{empty}
+
+Le but de ce TP est de créer une classe \texttt{SortedArraySet<E>} qui implémente \texttt{SortedSet}. 
+
+\section{Constructeurs}
+
+Pour cette classe,nous choisissons comme conteneur un tableau, avec comme attribut additionnel un entier désignant le nombre d'élément de notre collection.
+
+Comme on souhaite que le tableau soit trié, nous allons également prévoir un attribut de type \texttt{Comparator<? super E>}, qui peut permettre de comparer de objets de type E grâce à la méthode \texttt{compare(E e1, E e2)}. Cette référence doit être définie comme \texttt{final}.
+
+~\\ \question Ajoutez les constructeurs suivants: \texttt{SortedArraySet<E>()}, et  
+\texttt{SortedArraySet<E>(Comparator<? super E> comparator)} 
+%\texttt{SortedArraySet<E>(Collection<? extends E) collection)} 
+
+~\\ \question Programmez une méthode \texttt{compare(E e1, E e2)} qui compare les deux éléments passés en paramètre. Cette méthode qui respecte la convention usuelle du Java pour les comparaisons, utilise le \texttt{Comparator} s'il n'est pas \texttt{null} (s'il a été instancié par le constructeur). Si le \texttt{Comparator} est null, la comparaison se base sur l'ordre naturel des éléments comparables E, c'est-à-dire sur la méthode \texttt{compareTo}. Si aucune de ces deux possiblités n'est disponible, la méthode soulève une exception.
+
+~\\ \question Programmez les méthodes \texttt{isEmpty},  \texttt{size}, \texttt{toString} et \texttt{clone}.
+
+~\\ \question Programmez une méthode privée\footnote{Pourquoi faut-il absolument qu'elle soit privée ?} \texttt{indexOf} qui retourne l'index du premier élément supérieur ou égal à l'élément passé en paramètre (et pas -1 s'il n'est pas présent !). Cette méthode tirera bien évidemment parti du fait que le tableau est trié\footnote{Vive le retour de la dichotomie...} ! 
+
+~\\ \question Programmez une méthode privée \texttt{insert(int index, E element)}, qui insère un élément E à la position index. Programmez à présent la méthode publique \texttt{add(E element)} qui insère un élément à sa position dans le tableau.  
+
+~\\ \question Créer un main pour tester votre travail: créer un SortedArraySet<String> sans Comparateur spécifié, ajouter-y les éléments "Bonjour", "test", "abc", "Abajour", "lapin", et afficher le SortedArraySet ainsi obtenu. 
+
+~\\ \question On souhaite tester le comportement de la classe en utilisant un Comparator à la place de l'ordre naturel. Créer une classe MonComparateur<String> qui implémente l'interface Comparator<String> avec  un main pour tester votre travail: créer un SortedArraySet<String> sans Comparateur spécifié, ajouter-y les éléments "Bonjour", "test", "abc", "Abajour", "lapin". 
+
+
+
+
+et \texttt{remove(int index)}. Ces deux méthodes qui modifient le conteneur à partir d'un index, seront très pratiques pour programmer l'interface.
+
+
+
+
+
+
+
+~\\ \question Programmez le reste des méthodes de l'interface \texttt{SortedSet<E>}. Pour vos tests, vous pouvez utiliser la classe de tests fournie avec le sujet du TP.
+
+\begin{correction}
+% Non vérifiée ;-)
+{\color{red}
+\begin{lstlisting}[language=Java]
+    private int compare(E e1, E e2){
+        if (comparator != null)
+            return comparator.compare(e1, e2);
+        return ((Comparable<E> e1).compareTo(e2);
+    }
+\end{lstlisting}
+}
+
+\end{correction}
+
+\end{document}
+

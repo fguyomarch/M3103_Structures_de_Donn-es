@@ -1,0 +1,287 @@
+\documentclass[iutinfo,a4paper,11pt]{ustl-tdtp}
+
+
+\usepackage{lmodern}
+%\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fontspec}
+%\usepackage[french]{babel,varioref}
+\usepackage{floatrow}
+\usepackage{listings}
+%\usepackage[onelanguage,french,boxed]{algorithm2e}
+\usepackage{subfig}
+\usepackage{enumerate}
+\usepackage{color}
+\usepackage{graphicx}
+
+\usepackage{fancybox}
+\usepackage{tikz}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{
+  language=Java,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+
+
+
+\etablissement{\ustl}
+\formation{DUT info 2ème année}
+\matiere{Structures de données}
+\titre{TP7 : Implémentation d'un tas}
+\date{\annee{2017}--\annee{2018}}
+%\enseignant{}
+
+\begin{document}
+%\date{\footnotesize{2 heures}}
+
+\parindent 0.0cm
+
+\maketitle
+
+
+%Vous répondrez à la section 1 sur le sujet que vous rendrez en fin de contrôle.
+
+%\bigskip
+%\begin{LARGE}
+%  NOM et PRENOM:
+%\end{LARGE}
+
+\section{File de Priorités}
+
+\begin{figure}[h]
+  \begin{tikzpicture}[level/.style={sibling distance=60mm/#1}]
+    \node [circle,draw] (z){$16$}
+    child {node [circle,draw] (a) {$14$}
+      child {node [circle,draw] (b) {$8$}
+        child {node [circle,draw] (c) {$2$}}
+        child {node [circle,draw] (d) {$4$}}
+      }
+      child {node [circle,draw] (e) {$10$}
+        child {node [left,circle,draw] (f) {$7$}}
+        %child {node [circle,draw] (n) {$6$}}
+      }
+    }
+    child {node [circle,draw] (g) {$10$}
+      child {node [circle,draw] (h) {$9$}}
+      child {node [circle,draw] (i) {$3$}}
+    };
+    \begin{scope}[nodes = {above = 10pt}]
+      \node at (a) {\tiny{1}};
+      \node at (b) {\tiny{3}};
+      \node at (c) {\tiny{7}};
+      \node at (d) {\tiny{8}};
+      \node at (e) {\tiny{4}};
+      \node at (f) {\tiny{9}};
+      \node at (g) {\tiny{2}};
+      \node at (h) {\tiny{5}};
+      \node at (i) {\tiny{6}};
+      \node at (z) {\tiny{0}};
+    \end{scope}
+  \end{tikzpicture}
+  \caption{Exemple d'arbre représentant un tas}
+  % \includegraphics[width=200px]{arbre.png}
+  \label{arbre}
+\end{figure}
+
+Une file de priorité est une structure de données abstraite dans
+laquelle on peut ajouter et retirer des éléments, et dans laquelle
+l'élément qui sort est toujours le plus grand élément de la file de
+priorité 
+(celui qui a la plus haute priorité).  
+Il existe plusieurs implémentations possibles, mais certaines sont plus
+efficaces que d'autres, comme le tas. Contrairement à une simple liste
+dont on rechercherait le maximum pour le sortir, l'utilisation d'un
+tas, permettrait d'ordonner correctement les éléments de la file de
+priorité afin
+d'éviter une recherche longue du maximum, et d'éventuels décalages à
+effectuer dans la structure. 
+\\
+\newline
+Cette méthode consiste à gérer une structure d'ordre partiel grâce à
+un arbre. La file de priorité à \textbf{n} éléments est représentée par un arbre
+binaire contenant en chaque noeud un élément de la file de priorité (comme
+illustré dans la figure ~\ref{arbre}). L'arbre vérifie deux
+propriétés importantes: d'une part la valeur de chaque noeud est
+supérieure ou égale à celle de ses fils, d'autre part l'arbre est
+complet, propriété que nous allons décrire brièvement. Si l'on divise
+l'ensemble des n\oe uds en lignes suivant leur hauteur, on obtient en
+général dans un arbre binaire une ligne \textbf{0} composée simplement
+de la racine, puis une ligne \textbf{1} contenant au plus deux n\oe uds,
+et ainsi de suite (la ligne i contenant au plus \textbf{2\up{i}}
+n\oe uds). Dans un arbre complet les lignes, exceptée peut-être la
+dernière, contiennent toutes un nombre maximal de n\oe uds (soit
+\textbf{2\up{i}}). De plus les feuilles de la dernière ligne se
+trouvent toutes à gauche, ainsi tous les n\oe uds internes sont binaires,
+excepté le plus à droite de l'avant dernière ligne qui peut ne pas
+avoir de fils droit. Les feuilles sont toutes sur la dernière et
+éventuellement l'avant dernière ligne.  
+
+On peut numéroter cet arbre en largeur d'abord, c'est à dire dans
+l'ordre donné par les niveaux de l'arbre. Les index sont représentés
+dessus des n\oe uds sur la figure
+~\ref{arbre}. Dans cette numérotation on vérifie que tout noeud
+\textbf{i} a son père en position $\frac{i-1}{2}$, le fils gauche du
+noeud $i$ est $2i+1$, le fils droit
+$2i+2$. Formellement, on peut dire qu'un tas est un tableau
+\textbf{a} contenant $n$ entiers (ou des éléments d'un ensemble
+totalement ordonné) satisfaisant les conditions : 
+
+\begin{eqnarray*}
+1 \leq 2i+1 < n & \Rightarrow & \mathbb{\textbf{a}}[2i+1] \leq 
+                                 \mathbb{\textbf{a}}[i] \\
+2 \leq 2i+2 < n & \Rightarrow & \mathbb{\textbf{a}}[2i+2] \leq 
+                                 \mathbb{\textbf{a}}[i] \\
+\end{eqnarray*}
+%\begin{figure}[h]
+%   \caption{Conditions à respecter}
+%   \includegraphics[width=300px]{valeur.png}
+%   \label{valeur} 
+%\end{figure}
+
+Ceci permet d'implémenter cet arbre dans un tableau \textbf{a} où le
+numéro de chaque noeud donne l'indice de l'élément du tableau
+contenant sa valeur, comme indiqué dans le tableau ci-dessous :
+
+\begin{center}
+\begin{tabular}{|r|c |c |c |c |c |c |c |c |c |c|}
+  \hline
+  \textit{i}      &  0  &  1  &   2  & 3 & 4  & 5 & 6 & 7 & 8 & 9 \\
+  \hline
+  \textbf{a[i]} & 16 & 14 & 10 & 8 & 10 & 9 & 3 & 2 & 4 & 7 \\
+  \hline
+\end{tabular}
+\end{center}
+
+%\begin{figure}[h]
+%   \caption{\label{tableau} Organisation du tas en tableau}
+%   \includegraphics[width=200px]{tableau.png}
+%\end{figure}
+
+\pagebreak
+
+Il vous est demandé d'implémenter cette version de file de priorité en respectant l'interface suivante: 
+
+\begin{verbatim}
+  public interface FilePriorite<E> {
+      void clear(); 
+      Comparator<? super E> comparator()
+      boolean isEmpty();
+      boolean offer(E e);
+      E peek()
+      E poll();
+      int size();
+}
+
+\end{verbatim}
+
+\section{Implémentation pilotée par des tests}
+
+Les tests ont été écrits pour vous dans la classe
+\texttt{FilePrioriteTest}. Vous allez devoir implémenter la classe
+\texttt{FilePrioriteTas} qui contient les algorithmes d'utilisation de
+la file de priorité ainsi que des méthodes auxiliaires. Après chaque écriture de méthode, vous vérifierez que le test associé considère votre implémentation valide en faisant un clic droit sur la classe de test puis en choisissant "\textbf{Run As - JUnit test}" dans le menu contextuel. 
+
+~\\\question{Classe \texttt{FilePrioriteTas}}
+
+Écrivez la classe \texttt{FilePrioriteTas} implémentant l'interface
+\texttt{FilePriorite}, avec les attributs nécessaires à
+l'implémentation de la structure proposée (tas dans un tableau), ainsi
+que les constructeurs (avec une taille par défaut, une taille
+spécifiée).
+
+~\\\question{Ajout d'un \texttt{Comparator}}
+
+Dans le cas où les éléments stockés ne sont pas comparables (au sens \texttt{Comparable<E>}, il faut
+fournir un \texttt{Comparator<E>} au constructeur du tas. Ajoutez un
+attribut pour garder trace de ce comparateur et faites une méthode
+privée qui émule la comparaison que les éléments soient comparables ou
+pas : \texttt{private int compare(E e1, E e2)}.
+
+\noindent \textbf{N.B.} Cette méthode ne peut pas être statique car
+elle utilise le type générique \texttt{E}, et le comparateur.
+
+
+~\\\question{Méthode \texttt{toString}}
+
+Écrivez la méthode \texttt{String toString();} qui permet d'afficher
+la file de priorité sous la forme standard des collections Java :
+\texttt{[a, b, c, d, e, f, g, h]}.
+
+~\\\question{~Méthode \texttt{size}}
+
+Écrivez la méthode \texttt{int size();} qui retourne le nombre
+d'élément dans la file de priorité.
+
+~\\\question{~Méthode \texttt{isEmpty}}
+
+Écrivez la méthode \texttt{boolean isEmpty();} qui permet de tester si
+la file de priorité est vide ou non.
+
+~\\\question{~Méthode \texttt{peek}}
+
+Écrivez la méthode \texttt{E peek()} qui permet de retourner l'élément maximum.
+
+~\\\question{~Méthode \texttt{offer}}
+
+Écrivez la méthode \texttt{boolean offer(E e)} qui permet
+d'inserer un élément, si la file de priorité est pleine, l'insertion est impossible.
+
+~\\\question{~Méthode \texttt{poll}}
+
+Écrivez la méthode \texttt{E poll()} qui eleve l'élément de priorité le plus élevé, vous retourne \textbf{null} quand la liste est vide.
+
+~\\\question{~Méthode \texttt{clear}}
+
+Écrivez la méthode \texttt{void clear()} qui vide la file de priorité.
+
+~\\\question{~Allocation dynamique}
+
+Modifiez votre structure de façon à doubler la taille du tableau si la
+file de priorité est pleine lors d'un ajout. De même, si le taux de
+remplissage passe sous les 50\%, diviser la taille du tableau par 2.
+
+~\\\question{~Méthode \texttt{toScreen} \textit{(à faire en dernier)}}
+
+Écrivez une méthode \texttt{toScreen} qui affiche le tas sous forme
+arborescente. Le tas de la figure ~\ref{arbre} donnerai,
+par exemple, l'affichage ci-dessous:
+
+\begin{verbatim}
+        __16__
+       /      \
+    _14_       10
+   /    \     /  \
+  8     10   9    7
+ / \   /  \
+2   4 7    6
+\end{verbatim}
+
+
+%\section{Consignes}
+
+%Vous rendrez un unique fichier Java \textbf{à votre nom} contenant une classe publique
+%\texttt{FilePrioriteTas<E>}, implémentant \texttt{FilePriorite<E>}. Ce
+%fichier \textbf{doit} commencer par un commentaire Javadoc précisant
+%le contenu du fichier, l'auteur (balise \texttt{@author}) et la date
+%(balise \texttt{@date}). De plus, toute méthode doit être précédée par
+%un commentaire Javadoc précisant son rôle.
+
+\end{document}
+
+

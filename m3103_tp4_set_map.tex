@@ -1,0 +1,120 @@
+\documentclass[iutinfo,a4paper,10pt]{ustl-tdtp}
+%\usepackage[utf8]{inputenc}
+%\usepackage[a4paper]{geometry}
+
+\etablissement{\ustl}
+\formation{DUT info 2ème année}
+\matiere{Structures de données}
+\titre{TP 4 : Ensembles et Tables de Correspondance}
+\date{\annee{2017}--\annee{2018}}
+
+\parindent 0cm
+\begin{document}
+%\includeversion{solution}
+%\excludeversion{solution}
+
+\maketitle
+\thispagestyle{empty}
+
+\section{Interface \texttt{Set}}
+\sloppy
+
+\question Dans la méthode \texttt{main} d'une classe \texttt{ExoSet}, créez deux ensembles {\it ens1} et {\it ens2} d'\texttt{Integer} en utilisant l'implémentation \texttt{HashSet} de l'interface \texttt{Set}. Initialiser ces ensembles avec quelques entiers choisis aléatoirement.
+
+~\\ \question Écrivez une méthode \texttt{public static void afficher(Set
+  ens)} permettant l'affichage d'un ensemble \texttt{ens} en
+commençant par le nombre d'éléments contenus dans \texttt{ens} entre
+crochets, puis chacun des éléments de cet ensemble entre accolades. Par exemple, l'ensemble $A=\{8,1,4,2\}$ aura comme affichage: 
+\begin{verbatim}
+  [4]{8, 1, 4, 2}
+\end{verbatim}
+
+Pour les méthodes suivantes, vous veillerez à ne pas modifier les ensembles passés en paramètres.
+
+\question Créez une méthode \texttt{public static Set<Integer> inter(Set<Integer> set1, Set<Integer> set2)} qui renvoie un ensemble contenant l'intersection de deux ensembles en paramètres sans utiliser la méthode \texttt{retainAll} de \texttt{Set}.
+
+~\\ \question Créez une méthode \texttt{public static Set<Integer> union(Set<Integer> set1, Set<Integer> set2)} qui renvoie un ensemble contenant l'union de deux ensembles sans utiliser la méthode \texttt{addAll} de \texttt{Set}.
+
+~\\ \question Créez une méthode \texttt{public static boolean
+  isIn(Set<Integer> set1, Set<Integer> set2)} qui renvoie vrai si
+l'ensemble \texttt{set1} est inclus dans l'ensemble \texttt{set2} sans utiliser la méthode \texttt{containsAll} de \texttt{Set}.
+
+~\\ \question Implémentez les méthodes de test \texttt{testInter}, \texttt{testUnion} et \texttt{testIsIn} dans une classe de test \texttt{ExoSetTest} qui vérifient le bon comportement des 3 méthodes décrites plus haut. 
+
+\section{Implémentation de l'interface \texttt{SortedSet}}
+
+\question Créez une classe \texttt{SortedArraySet<E>} qui implémente \texttt{Set}. Nous choisissons pour celle-ci comme conteneur, un tableau trié, avec comme attributs additionnels, un entier désignant le nombre d'élément de notre collection, ainsi qu'une référence \texttt{comparator}\footnote{\texttt{comparator} sera \texttt{null} si les éléments sont triés suivant leur ordre naturel} sur un \texttt{Comparator}\footnote{Le type exact est \texttt{Comparator<? super E>}.}. Cette référence doit être définie comme \texttt{final}.
+
+~\\ \question Ajoutez les constructeurs suivants: \texttt{SortedArraySet<E>()}, 
+\texttt{SortedArraySet<E>(Comparator<? super E> comparator)}, 
+\texttt{SortedArraySet<E>(Collection<? extends E) collection)} 
+
+~\\ \question Programmez une méthode \texttt{compare(E e1, E e2)} qui compare les deux éléments passés en paramètre. Cette méthode qui respecte la convention usuelle du Java pour les comparaisons, utilise le \texttt{comparator} s'il n'est pas \texttt{null}, sinon elle utilise l'ordre naturel des éléments. Si aucune de ces deux possibilités n'est disponible, la méthode soulève une exception.
+
+~\\ \question Programmez les méthodes \texttt{isEmpty},  \texttt{size} et \texttt{clone}.
+
+~\\ \question Programmez une méthode privée\footnote{Pourquoi faut-il absolument qu'elle soit privée ?} \texttt{indexOf} qui retourne l'index du premier élément supérieur ou égal à l'élément passé en paramètre (et pas -1 s'il n'est pas présent !). Cette méthode tirera bien évidemment parti du fait que le tableau est trié\footnote{Vive le retour de la dichotomie...} ! 
+
+~\\ \question Programmez deux méthodes privées \texttt{insert(int index, E element)} et \texttt{remove(int index)}. Ces deux méthodes qui modifient le conteneur à partir d'un index, seront très pratiques pour programmer l'interface.
+
+~\\ \question Programmez le reste des méthodes de l'interface \texttt{SortedSet<E>}. Pour vos tests, vous pouvez utiliser la classe de tests fournie avec le sujet du TP.
+
+\begin{correction}
+% Non vérifiée ;-)
+{\color{red}
+\begin{lstlisting}[language=Java]
+    private int compare(E e1, E e2){
+        if (comparator != null)
+            return comparator.compare(e1, e2);
+        return ((Comparable<E> e1).compareTo(e2);
+    }
+\end{lstlisting}
+}
+
+\end{correction}
+
+\section{Interface \texttt{Map}}
+Les implémentations de \texttt{Map} permettent de retrouver rapidement
+une \texttt{Value} à partir de sa clef : l'association privilégie donc
+un sens. Nous voudrions dans ce TP, avoir une association
+bidirectionnelle. En utilisant toujours la notion de \texttt{Map} et
+son implémentation \texttt{HashMap}, nous
+allons implémenter l'interface \texttt{BidirectionnalMap} suivante:
+
+\begin{verbatim}
+/**
+ * A BidirectionnalMap associates a primary with a secondary key  
+ * but also the secondary with the primary key.
+ * K1 and K2 are the types for primary and secondary key.
+ */
+public interface BidirectionnalMap<K1, K2> {
+    public abstract K2 getFromPrimary(K1 k);
+    public abstract K1 getFromSecondary(K2 k);
+
+    public abstract void put(K1 k1, K2 k2);
+    public abstract boolean isEmpty();
+    public abstract void clear();
+    public abstract void removeFromPrimary(K1 k1);
+}
+\end{verbatim}
+
+Cette interface est disponible dans les ressources du TP sur moodle.
+
+~\\ \question Quels sont les attributs nécessaires pour la
+classe \texttt{Dictionnary} qui implémente l'interface
+\texttt{BidirectionnalMap} ? Créez votre projet Eclipse, et la classe
+\texttt{Dictionnary} avec ses attributs (Pensez à préciser que
+\texttt{Dictionnary} implémente \texttt{BidirectionnalMap} dès la
+création).
+
+~\\ \question Programmez toutes les méthodes héritées de
+\texttt{BidirectionnalMap} et redéfinissez la méthode
+\texttt{toString}, de façon à ce qu'un appel à
+\texttt{System.out.println(myDico)} affiche le contenu du dictionnaire
+un couple par ligne.
+
+~\\ \question Écrivez un petit programme qui permette de
+traduire une phrase passée comme argument sur la ligne de commande. Vous aurez bien sûr à préalablement remplir votre dictionnaire avec les mots nécessaires.
+
+\end{document}
+

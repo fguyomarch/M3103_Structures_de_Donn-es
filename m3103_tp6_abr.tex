@@ -1,0 +1,72 @@
+\documentclass[iutinfo,a4paper,nocorrections,10pt]{ustl-tdtp}
+%\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fontspec}
+%\usepackage[a4paper]{geometry}
+
+\etablissement{\ustl}
+\formation{DUT info 2ème année}
+\matiere{Structures de données}
+\titre{TP 6 : Arbres Binaires de Recherche (ABR)}
+\date{\annee{2017}--\annee{2018}}
+
+\parindent 0cm
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\sloppy
+
+
+Dans ce TP nous allons réviser les \texttt{Map}, tout d'abord en utilisant une \texttt{Map} pour compter les occurences de mots dans un texte, puis implémentant cette interface à l'aide d'un
+arbre binaire de recherche. Nous ne nous occupons absolument pas de
+l'équilibrage de l'arbre. La seule propriété que nous garantissons sur
+l'arbre, c'est qu'il est un arbre de recherche.
+
+\section*{Utilisation de \texttt{Map}}
+
+~\\ \textbf{Question 1 :} Faites un programme qui lit un texte (en UTF-8) et compte au fur et à mesure les occurrences des mots dans ce texte. Cette information sera conservée dans une \texttt{Map<String, Integer>}.
+
+~\\ \textbf{Question 2 :} Après lecture du texte, votre programme affichera les cinq mots les plus courants dans le texte avec leur nombre d'apparitions. 
+
+~\\ \textbf{Question 3 :} Essayez votre programme sur le texte de \emph{Nôtre-Dame de Paris} que vous aurez au préalablement téléchargé depuis le site.
+
+\section*{Implémentation de \texttt{Map}}
+
+Pour cette partie, vous créerez une classse \texttt{BinarySearchTreeTest} pour vos tests, et vous l'enrichirez tout au long du TP par des tests pertinents. N'hésitez pas à vous inspirer des classes de tests utilisées tout au long des TP précédents.
+
+~\\ \textbf{Question 4 :} Créez une classe \texttt{BinarySearchTree<K,V>} qui
+implémente \texttt{Map<K,V>}. Cette classe contiendra deux attributs \texttt{key } et \texttt{value} pour stocker une association. Vous y ajouterez deux 
+attributs \texttt{left} et \texttt{right}, de type
+\texttt{BinarySearchTree<K,V>}. Ces deux attributs serviront à désigner les fils
+respectivement gauche et droit du noeud. Vous y inclurez enfin tout ce qui vous
+semble nécessaire pour la base de votre classe
+(constructeurs, \texttt{Comparator}\footnote{Si cela vous simplifie la vie, vous pouvez considérer que les clés implémentent l'interface \texttt{Comparable}.}...).
+
+~\\ \textbf{Question 6 :} Redéfinissez la méthode \texttt{toString}, de façon à ce qu'un appel à \texttt{System.out.println(myBST)} affiche\footnote{Pensez à bien respecter la convention des \texttt{Collections} en Java.} les associations contenues dans l'arbre dans l'ordre infixe. N'hésitez pas à faire d'autres affichages alternatifs : si, par exemple, les sous-arbres sont facilement identifiables (typiquement en les mettant entre parenthèses), cela vous facilitera le debugging.
+
+~\\ \textbf{Question 7 :} Programmez une méthode \texttt{BinarySearchTree<K,V> search(K key)} qui localise l'emplacement potentiel d'une clé dans l'arbre. Programmez aussi les autres méthodes utilitaires sur les arbres binaires de recherche (telles \texttt{bstMin} ou \texttt{deleteMin} par exemple).
+ 
+~\\ \textbf{Question 8 :} Programmez toutes les méthodes d'ajout et de suppression héritées de \texttt{Map}
+
+~\\ \textbf{Question 9 :} Créez une classe \texttt{BSTIterator}
+implémentant l'interface \texttt{Iterator}. Afin de garder trace de
+l'élément couramment pointé, cette classe pourra contenir un attribut
+de type \texttt{BinarySearchTree}. 
+
+~\\ \textbf{Question 10 :} Programmez les méthodes de
+\texttt{BinarySearchTree} héritées de \texttt{Map}.
+
+~\\ \textbf{Question 11 :} La version courante de \texttt{BSTIterator} oblige à faire une descente dans l'arbre à chaque fois que le noeud courant
+n'a pas de fils droit. Pour éviter cela, conservez tout la branche
+courante dans une \texttt{Stack} (remplacez l'attribut); puis
+reprogrammez les méthodes de l'\texttt{Iterator}.
+
+~\\ \textbf{Question 12 :} Testez votre implémentation de \texttt{Map}
+avec le programme de la question 3.
+
+~\\ \textbf{Question 13 :} Enrichissez votre classe
+\texttt{BinarySearchTree} pour qu'elle utilise le \texttt{Comparator}
+s'il est précisé à l'instanciation de la \texttt{Map} (via le constructeur), sinon elle
+utilise la comparaison par défaut, à savoir celle induite par le fait que les clés implémentent \texttt{Comparable}.
+
+\end{document}

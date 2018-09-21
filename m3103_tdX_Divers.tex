@@ -1,0 +1,195 @@
+\documentclass[iutinfo,a4paper,corrections,10pt]{ustl-tdtp}
+%\usepackage[utf8]{inputenc}  
+%\usepackage[T1]{fontenc}
+\usepackage{fontspec}
+\usepackage{listings}  
+\usepackage{version}
+\usepackage{tikz}
+
+
+%\usepackage[a4paper]{geometry}
+
+
+\etablissement{\ustl}
+\formation{DUT info 2ème année}
+\matiere{Structures de données}
+\titre{TD : Révisions}
+\date{\annee{2017}--\annee{2018}}
+%\enseignant{}
+
+\includeversion{solution}
+%\excludeversion{solution}
+
+\lstset{
+    breaklines=true
+}
+
+\newcommand{\case}{}%\rule[-.40cm]{0pt}{1cm}}
+\newcommand{\ident}[3]{(\texttt{#1},~\texttt{#2},~\texttt{#3})}
+\newcommand{\rien}{}
+
+\parindent 0cm
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+
+
+\subsection*{Exercice $\infty$ :Expressions arithmétiques}
+
+
+\question Écrivez l'arbre binaire qui correspond à l'expression arithmétique infixe suivante : \\
+\texttt{((7 + 3) - 1) + (2 * (4 - 5))}
+
+
+\begin{solution}
+{\color{red}
+
+\begin{tikzpicture}
+	\node (is-root) {+}
+		[sibling distance=3cm]
+		child {
+			node {-}
+				[sibling distance=2cm]
+				child { 
+					node {+} 
+				[sibling distance=2cm]
+				child{ node {7} }	
+				child { node {3} }		
+				}	
+				child { node {1} }
+				}	
+		child {
+			node {*}
+				[sibling distance=2cm]
+				child { 
+					node {2} }	
+				child { node {-} 
+				  [sibling distance=2cm]
+				  child{ node {4} }	
+				  child { node {5} }
+				}				
+		};
+		
+\end{tikzpicture}
+}
+\end{solution}
+
+~\\ \question Écrivez les versions préfixe et postfixe de l'expression.
+
+\begin{solution}
+{\color{red}
+préfixe : + - + 7 3 1 * 2 - 4 5  \\
+postfixe : 7 3 + 1 - 2 4 5 - * +
+
+}
+\end{solution}
+
+~\\ \question Nous avons vu en cours comment évaluer une expression postfixe à partir d'une pile. En décrivant les états successifs de la pile, évaluez l'expression postfixe exprimée plus haut.
+
+\begin{solution}
+{\color{red}
+entrée : \textbf{7} 3 + 1 - 2 4 5 - * +  \\
+pile : 7 
+\\
+entrée : 7 \textbf{3} + 1 - 2 4 5 - * +  \\
+pile : 7 3 
+\\
+entrée : 7 3 \textbf{+} 1 - 2 4 5 - * +  \\
+pile : 10
+\\
+entrée : 7 3 + \textbf{1} - 2 4 5 - * +  \\
+pile : 10 1
+\\
+entrée : 7 3 + 1 \textbf{-} 2 4 5 - * +  \\
+pile : 9
+\\
+entrée : 7 3 + 1 - \textbf{2} 4 5 - * +  \\
+pile : 9 2 
+\\
+entrée : 7 3 + 1 - 2 \textbf{4} 5 - * +  \\
+pile : 9 2 4
+\\
+entrée : 7 3 + 1 - 2 4 \textbf{5} - * +  \\
+pile : 9 2 4 5
+\\
+entrée : 7 3 + 1 - 2 4 5 \textbf{-} * +  \\
+pile : 9 2 -1
+\\
+entrée : 7 3 + 1 - 2 4 5 - \textbf{*} +  \\
+pile : 9 -2
+\\
+entrée : 7 3 + 1 - 2 4 5 - * \textbf{+}  \\
+pile : 7
+\\
+}
+\end{solution}
+
+~\\ \question Écrivez la méthode \texttt{int evaluate(String [] input)} qui retourne le résultat de l'évaluation de l'expression postfixe contenu dans \texttt{input}(avec un élément de l'expression par case) à partir d'une pile. Vous considérerez qu'il n'y a que des opérandes entières ou des opérateurs binaires dans l'entrée et que l'expression est correcte. Vous disposez des méthodes suivantes:
+\begin{itemize}
+\item \texttt{int compute(int op1, int op2, String operator)} qui retourne le calcul de \texttt{op1 operator op2} 
+\item \texttt{boolean isNumber(String s)} qui indique vrai si la chaîne de caractères \texttt{s} correspond à un nombre et faux sinon.
+\item \texttt{Integer parseInt(String s)} qui convertit une chaîne de caractères \texttt{s} en entier.
+\item \texttt{String valueOf(int i)} qui convertit un entier \texttt{i} en chaîne de caractères.
+\end{itemize}.
+
+\begin{solution}
+{\color{red}
+\begin{lstlisting}[language=Java]
+public int evaluate(String [] input){
+ Stack<String> stack = new Stack<String>();
+  for(int i = 0; i < input.length; i++){
+   String s = input[i];
+    if(isNumber(s)){
+     stack.push(s);
+    }else{
+      int op2 = Integer.parseInt(stack.pop());
+      int op1 = Integer.parseInt(stack.pop());
+      int res = compute(op1,op2,s);
+      stack.push(String.valueOf(res));
+    }
+  }
+  return Integer.parseInt(stack.pop());
+}
+\end{lstlisting}
+}
+\end{solution}
+
+\question Écrivez une version récursive (sans pile) terminale de la méthode \texttt{evaluate}.
+
+\begin{solution}
+{\color{red}
+\begin{lstlisting}[language=Java]
+public int evaluate(String [] input){
+  return evaluate(input,0);
+}
+
+private int evaluate(String [] input, int cursor){
+ if(input.length==1) return Integer.parseInt(input[0]);
+ else if(isNumber(input[cursor]))
+  return evaluate(input,++cursor);
+  else{ 
+   int op1 = Integer.parseInt(input[cursor-2]);
+   int op2 = Integer.parseInt(input[cursor-1]);
+   int res = compute(op1,op2,input[cursor]);
+   String [] s = new String[input.length-2];
+   for(int i = 0, j = 0; i < input.length; i++){
+     if(i<cursor-2||i>cursor){
+	  s[j++] = input[i];
+     }
+     if(i==cursor){
+      s[j++] = String.valueOf(res);
+     }
+   }
+   return evaluate(s,0);
+   }
+}
+\end{lstlisting}
+}
+\end{solution}
+
+
+
+
+\end{document}
+

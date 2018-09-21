@@ -1,0 +1,598 @@
+\documentclass[iutinfo,a4paper,nocorrections,10pt]{ustl-tdtp}
+%\usepackage[utf8]{inputenc}  
+%\usepackage[T1]{fontenc}
+\usepackage{listings}  
+\usepackage{version}
+
+%\usepackage[a4paper]{geometry}
+
+
+\etablissement{\ustl}
+\formation{DUT info 2ème année}
+\matiere{Structures de données}
+\titre{TD 4 : Ensembles et Tables de Correspondance}
+\date{\annee{2017}--\annee{2018}}
+%\enseignant{}
+
+%\includeversion{solution}
+\excludeversion{solution}
+
+\lstset{
+    breaklines=true
+}
+
+\newcommand{\case}{}%\rule[-.40cm]{0pt}{1cm}}
+\newcommand{\ident}[3]{(\texttt{#1},~\texttt{#2},~\texttt{#3})}
+\newcommand{\rien}{}
+
+\parindent 0cm
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+
+\section{L'interface Set<E>}
+
+Quelques méthodes de cette interface:
+
+\begin{center}
+\begin{tabular}{|r|l|}
+\hline
+boolean & add(E o)\\
+&~~ajoute l'élément spécifié au sein de l'objet Set, s'il n'est pas déjà présent\\
+
+\hline
+boolean & addAll(Collection<E> c)\\
+&~~ajoute tous les éléments de la collection spécifiée au sein de l'objet Set, s'ils ne sont pas déjà présents\\
+
+\hline
+  boolean &isEmpty()\\
+&~~retourne true si l'ensemble ne contient aucun élément\\
+
+ \hline
+ boolean& contains(Object o)\\
+&~~retourne true si l'élément spécifié est contenu dans l'objet Set\\
+
+\hline
+ boolean &containsAll(Collection<?> c)\\
+&~~retourne true si l'objet Set contient tous les éléments de la collection spécifiée\\
+
+\hline
+ Iterator<E> & iterator()\\
+&~~retourne un itérateur sur les éléments de l'ensemble\\
+\hline
+ boolean &remove(Object o)\\
+&~~supprime l'élément spécifié de la collection Set, s'il est présent\\
+
+\hline
+ boolean &removeAll(Collection<?> c)\\
+&~~supprime tous les éléments contenus dans la collection spécifiée, de l'objet Set, s'ils y sont présents\\
+\hline
+ boolean &retainAll(Collection<?> c)\\
+&~~retient seulement les éléments de l'objet Set, qui sont contenus dans la collection spécifiée\\
+\hline
+ int& size()\\
+&~~retourne le nombre d'éléments de l'ensemble\\
+
+\hline
+\end{tabular}
+\end{center}
+
+
+
+%\item Object[] toArray()
+%retourne un tableau contenant tous les éléments de l'objet Set.
+%
+%\item Object[] toArray(Object[] a)
+%retourne un tableau contenant tous les éléments de l'objet Set, et le type d'exécution du tableau retourné est celui du tableau spécifié.
+
+
+
+
+~\\ \question On veut créer un \texttt{Set} {\it ens}  contenant les jours de la semaine. 
+%Proposer deux solutions pour initialiser cet ensemble.
+
+~\\ \question Laissez dans {\it ens} uniquement les jours ouvrés. 
+
+~\\ \question Écrivez une méthode \texttt{public void afficher(Set s)} permettant d'afficher le nombre d'éléments d'un ensemble, puis chaque élément de cet ensemble avec un élément par ligne.
+
+\begin{correction}
+{\color{red}
+\begin{lstlisting}[language=Java]
+Set<String> ens = new HashSet<String>();
+ens.add("lundi"); 
+ens.add("mardi");
+ens.add("mercredi");
+ens.add("jeudi");
+ens.add("vendredi");
+ens.add("samedi");
+ens.add("dimanche");
+ens.remove("samedi");
+ens.remove("dimanche");
+
+public  void afficher(Set <E> s){
+  System.out.println(s.size());
+  Iterator<E> it = s.iterator();
+  while(it.hasNext()){
+   System.out.println(it.next());
+  }
+}
+\end{lstlisting}
+}
+
+\end{correction}
+
+
+Voici un petit rappel de la javadoc de Iterator<E> qui peut servir :
+ \begin{center}
+\begin{tabular}{|r|l|}
+\hline
+ boolean	&hasNext()  \\
+         & ~~ Returns true if the iteration has more elements.  \\
+\hline
+ E	&next()  \\
+          &~~ Returns the next element in the iteration.  \\
+\hline
+ void&	remove()  \\
+        & ~~ Removes from the underlying collection the last element returned by this iterator (optional operation).  \\
+
+
+\hline
+\end{tabular}
+\end{center}
+
+\section{Implémentation de l'interface Set<E>}
+
+~\\ \question Donnez au moins deux implémentations possible de l'interface \texttt{Set}.
+
+~\\ \question Nous choisissons comme conteneur du \texttt{Set}, un tableau non trié. 
+%\footnote{Pour être plus précis, notre classe devrait alors implémenter l'interface \texttt{SortedSet}.}
+Quels sont les attributs nécessaires à votre classe \texttt{ArraySet} ?
+
+~\\ \question Programmez les méthodes \texttt{isEmpty} et \texttt{size}.
+
+~\\ \question Que faut-il comme information pour itérer sur le contenu de notre ensemble ? Programmez un \texttt{Iterator} sur le \texttt{ArraySet}, et programmez la méthode \texttt{Iterator<E> iterator()}.
+
+~\\ \question Programmez une méthode privée \texttt{indexOf} qui retourne l'index de l'élément passé en paramètre (-1 s'il n'est pas présent). Expliquez pourquoi cette méthode doit absolument être privée.
+
+~\\ \question Programmez une méthode privée \texttt{expand} qui double la taille du conteneur, puis une seconde méthode privée \texttt{reduce} qui la réduit de moitié.
+
+~\\ \question Programmez alors toutes les autres méthodes de l'interface \texttt{Set}. N'hésitez pas à utiliser à bon escient les méthodes privées !
+
+\begin{correction}
+% Non vérifiée ;-)
+{\color{red}
+\begin{lstlisting}[language=Java]
+public class ArraySet<E> implements Set<E> {
+    private E[] tab;
+    private int n; // number of items in Set
+    private static final int DEFAULT_SIZE = 20;
+
+    public ArraySet<>(int n){
+        tab = (E[]) new Object[n];
+        this.n =0;
+    }
+    public ArraySet<>(){
+        this(DEFAULT_SIZE);
+    }
+    
+    public int size(){
+        return n;
+    }
+    public boolean isEmpty(){
+        return n==0;
+    }
+    
+    private class ArraySetIterator implements Iterator<E>{
+        private int id;
+        public ArraySetIterator(){
+            id=0;
+        }
+        public boolean hasNext(){
+            return id<n;
+        }
+        public E next(){
+            return tab[id++];
+        }
+    }
+    public Iterator<E> iterator(){
+        return new ArraySetIterator();
+    }
+    
+    private int indexOf(E e){
+        int i = 0;
+        while (i<n && !tab[i].equals(e))
+            ++i;
+        return i==n?-1:i;
+    }
+    
+    private void expand(){
+        E[] tmp = (E[]) new Object[tab.size*2];
+        for(int i=0; i<n; ++i)
+            tmp[i] = tab[i];
+        tab = tmp;
+    }
+    private void reduce(){
+        E[] tmp = (E[]) new Object[tab.size/2];
+        for(int i=0; i<n; ++i)
+            tmp[i] = tab[i];
+        tab = tmp;
+    }
+    
+    public boolean add(E e){
+        int i = indexOf(e);
+        if (i!=-1)
+            return false;
+        if (n==tab.size)
+            expand()
+        tab[n++] = e;
+        return true;
+    }
+    public boolean addAll(Collection<E> c){
+        boolean r = false;
+        for(E e : c)
+            r = r && add(e);
+    }
+    
+    public contains(Object o){
+        return indexOf(o)!=-1;
+    }
+    public boolean addAll(Collection<E> c){
+        boolean r = true;
+        for(E e : c) //beurk ;-)
+            r = r && contains(e); 
+    }
+    
+    public boolean remove(E e){
+        int i = indexOf(e);
+        if (i==-1)
+            return false;
+        tab[i] = tab[n];
+        --n;
+        if (n<tab.size/2)
+            reduce()
+        return true;
+    }
+    public boolean removeAll(Collection<E> c){
+        boolean r = false;
+        for(E e : c)
+            r = r && remove(e);
+    }
+    public boolean retainAll(Collection<E> c){
+        // TODO
+    }
+    
+}
+
+
+\end{lstlisting}
+}
+
+\end{correction}
+
+\section{L'interface Map<K,V>}
+
+
+Pour la très célèbre course "Le tour de la Terre Adélie en Pédalo",
+l'organisateur vous a demandé une aide pour la mise au point du
+logiciel gardant toutes les données de la course. 
+
+\question Créez une classe \texttt{Temps} qui permette
+de représenter les différents temps des coureurs. Cette classe
+contient, entre autres, 
+\begin{itemize}
+\item une redéfinition de la méthode \texttt{toString} avec un affichage du type "HH-MM-SS" (pas de temps supérieur à 100h),
+\item une méthode \texttt{add} qui retourne l'addition de deux \texttt{Temps}.
+\end{itemize}
+\begin{correction}
+{\color{red}
+\begin{lstlisting}[language=Java]
+public class Temps {
+	int secondes;
+	
+	public Temps(int sec){
+		this.secondes = sec;
+	}
+	public String toString(){
+		String sH = "",sM ="", sS="";
+		int h = (secondes/3600)%24;
+		int m = (secondes/60)%60;
+		int s = secondes%60;
+		if(h<10)sH+="0";
+		if(m<10)sM+="0";
+		if(s<10)sS+="0";
+		return sH+h+":"+sM+m+":"+sS+s;
+	}
+	public static Temps add (Temps t){
+		return new Temps(this.secondes+t.secondes);
+	}
+}
+\end{lstlisting}
+}
+\end{correction}
+
+D'autre part voici un extrait de la JavaDoc de Map:
+
+\begin{center}
+\begin{tabular}{|r|l|}
+\hline
+ void	& clear() \\
+        &~~  Removes all of the mappings from this map (optional operation).\\
+ \hline
+boolean&	containsKey(Object key) \\
+        &~  Returns true if this map contains a mapping for the specified key.\\
+\hline
+ boolean&	containsValue(Object value) \\
+        &~~  Returns true if this map maps one or more keys to the specified value.\\
+\hline
+ Set<Map.Entry<K,V> >&	entrySet() \\
+        &~~  Returns a Set view of the mappings contained in this map.\\
+\hline
+ boolean&	equals(Object o) \\
+        &~~  Compares the specified object with this map for equality.\\
+\hline
+ V	&get(Object key) \\
+        &~~ Returns the value to which the specified key is mapped,\\
+        &~~ or null if this map contains no mapping for the key.\\
+\hline
+ int	&hashCode() \\
+        &~~  Returns the hash code value for this map.\\
+\hline
+ boolean&	isEmpty() \\
+        &~~  Returns true if this map contains no key-value mappings.\\
+\hline
+ Set<K>	&keySet() \\
+        &~~  Returns a Set view of the keys contained in this map.\\
+\hline
+ V	&put(K key, V value) \\
+        &~~  Associates the specified value with the specified key in this map \\
+        &~~ (optional operation).\\
+\hline
+ void	&putAll(Map<? extends K,? extends V> m) \\
+        &~~  Copies all of the mappings from the specified map to this map\\
+        &~~ (optional operation).\\
+\hline
+ V	&remove(Object key) \\
+        &~~  Removes the mapping for a key from this map if it is present (optional operation).\\
+\hline
+ int	&size() \\
+        &~~  Returns the number of key-value mappings in this map.\\
+\hline
+ Collection<V>&	values() \\
+          &~~ Returns a Collection view of the values contained in this map.\\
+\hline
+\end{tabular}
+\end{center}
+
+Puis un extrait de la JavaDoc de Map.Entry:
+
+\begin{center}
+\begin{tabular}{|r|l|}
+\hline
+ boolean&	equals(Object o) \\
+          &~~ Compares the specified object with this entry for
+          equality. \\
+\hline
+ K&	getKey() \\
+     &  ~~   Returns the key corresponding to this entry. \\
+\hline
+ V&	getValue() \\
+     &   ~~  Returns the value corresponding to this entry. \\
+\hline
+ int&	hashCode() \\
+       &  ~~ Returns the hash code value for this map entry. \\
+\hline
+ V	&setValue(V value) \\
+          &~~ Replaces the value corresponding to this entry with the specified value (optional operation). \\
+\hline
+\end{tabular}
+\end{center}
+
+~\\ \question Les temps effectués par les coureurs à
+chaque étape sont conservés dans une liste \texttt{resultatsEtapes}
+de \texttt{Map} (la liste et les \texttt{Map} sont déjà
+créées). Écrivez les quelques lignes de code qui permettent de stocker,
+pour le coureur \texttt{nomCoureur}, son temps \texttt{tEtape} pour
+l'étape d'index \texttt{iEtape}. Si vous aviez dû créer la liste, quelle implémentation de \texttt{List} vous semblerait la plus appropriée?
+
+\begin{correction}
+{\color{red}
+Une \texttt{ArrayList} serait appropriée car il apparaît que l'on va accéder à des éléments de la liste par l'indice. L'indexation dans une \texttt{ArrayList} se fait en temps constant.
+\begin{lstlisting}[language=Java]
+resultatsEtapes.get(iEtape).put(nomCoureur, new Temps(tEtape));
+\end{lstlisting}
+}
+\end{correction}
+
+
+~\\ \question  On veut maintenant, pour un coureur
+\texttt{nomCoureur}, récupérer la liste des temps qu'il a effectués pour toutes les étapes successives. Écrivez les quelques lignes de code qui remplissent cette liste.
+\begin{correction}
+{\color{red}
+\begin{lstlisting}[language=Java]
+List<Temps> listeDesTemps = new ArrayList<Temps>();
+  for(Map<String, Temps> map : resultatsEtapes){
+    listeDesTemps.add(map.get(nomCoureur));
+  }
+\end{lstlisting}
+}
+\end{correction}
+
+~\\ \question Pour le classement final, il faut connaître
+le temps cumulé des étapes pour tous les coureurs. Écrivez les
+quelques lignes de code qui créent et remplisse la \texttt{Map}
+associant chaque coureur à son temps cumulé.
+
+\begin{correction}
+{\color{red}
+\begin{lstlisting}[language=Java]
+Map<String,Temps> mapDesTempsCumules = new HashMap<String,Temps>();
+		Set<String> coureurs = resultatsEtapes.get(0).keySet(); 
+		Iterator<String> it = coureurs.iterator();
+		while(it.hasNext()){
+			String nom = it.next();
+			for(Map<String, Temps> map : resultatsEtapes){
+				if(mapDesTempsCumules.containsKey(nom)){
+					Temps tempsCumule = mapDesTempsCumules.get(nom);
+					tempsCumule = tempsCumule.add(map.get(nom));
+					mapDesTempsCumules.put(nom, tempsCumule);
+				}else{
+					mapDesTempsCumules.put(nom, map.get(nom));
+				}
+			}
+		}
+\end{lstlisting}
+}
+\end{correction}
+
+~\\ \question  Est-il possible d'avoir maintenant le
+classement des coureurs? Décrivez (sans les lignes de codes) les étapes qui permettraient de générer un tableau des noms correspondant au
+classement final à partir des temps cumulés. Quel est le problème ?
+
+\begin{correction}
+{\color{red}
+Il n'y a pas de notion d'ordre dans l'interface \texttt{Map}. L'interface \texttt{SortedMap} fournit un ordre total mais sur les clés, pas sur les valeurs. Ici, nous souhaitons trier les couples en fonction des valeurs. On va donc passer par un tableau pour stocker le classement et on utilisera la \texttt{Map} associant chaque coureur à son temps cumulé pour comparer les temps : 
+
+\begin{enumerate}
+\item On alloue un tableau de \texttt{String} de la taille de la \texttt{Map} des temps cumulés.
+\item On itère sur la \texttt{Map} et on copie chacune des clés dans le tableau.
+\item On trie le tableau en comparant les temps cumulés récupérés depuis la \texttt{Map} avec un tri classique.
+
+\end{enumerate}
+Ci-dessous un code possible avec tri par sélection et insertion, il n'est pas utile de le détailler auprès des étudiants.
+\begin{lstlisting}[language=Java]
+String [] classement = new String [tempsCumules.size()];
+		//Remplissage du tableau
+		int curseur = 0;
+		Iterator<String> it = tempsCumules.keySet().iterator();
+		while(it.hasNext()){
+			classement[curseur++] = it.next();
+		}
+		//Tri par selection
+		int idxMin = 0;
+		Temps tempsMin = tempsCumules.get(classement[0]);
+		Temps current = tempsMin;
+		for(int i  = 0; i < classement.length; i++){
+			idxMin = i;
+			for(int j = i; j < classement.length; j++){
+				current = tempsCumules.get(classement[j]);
+				if(current.secondes < tempsMin.secondes){
+					idxMin = j;
+					tempsMin = current;
+				}
+			}
+			if(idxMin!=i){
+			String tmp = classement[i];
+			classement[i] = classement[idxMin];
+			classement[idxMin] = tmp;
+			}
+		}
+		
+		//Tri par insertion
+		String tmp;
+		int j;
+		for(int i = 1; i < classement.length; i++){
+			j = i;
+			tmp = classement[i];
+			while(j>0 && tempsCumules.get(classement[j-1]).secondes
+			 >= tempsCumules.get(tmp).secondes){
+				classement[j] = classement[j-1];
+				j--;
+			}
+			classement[j] = tmp;
+		}
+		
+		
+\end{lstlisting}
+}
+\end{correction}
+
+\paragraph{}Vous avez implémenté dans le premier TD l'interface \texttt{Comparable} pour spécifier les relations d'ordre entre deux objets de même type à travers la méthode \texttt{compareTo(Object o1)}.
+
+~\\ \question 
+Dans la classe \texttt{Temps}, implémentez l'interface \texttt{Comparable}.
+
+
+\begin{correction}
+{\color{red}
+\begin{lstlisting}[language=Java]
+public class Temps implements Comparable<Temps>{
+   public int compareTo(Temps t) {
+     return this.secondes-t.secondes;
+  }
+}
+\end{lstlisting}
+
+}
+\end{correction}
+
+\paragraph{}Pour comparer aisément et élégamment les couples de la table (chaque couple est du type \texttt{Entry<K,V>}), vous allez maintenant définir un \texttt{Comparator}. Cette technique est aussi utilisée lorsque vous voulez définir plusieurs ordres différents pour un même type d'objet, ce qui n'est pas possible avec \texttt{Comparable}. Ci-dessous, vous trouverez un exemple de cette utilisation où l'on définit un \texttt{Comparator} d'employés basé sur l'ancienneté. On précise que le type \texttt{Date} de la bibliothèque Java implémente l'interface \texttt{Comparable}.
+\begin{lstlisting}[language=Java]
+public class Employe implements Comparable<Employe> {
+    public String nom()     { ... }
+    public int numero()    { ... }
+    public Date dateEmbauche() { ... }
+    ...
+}
+public class Quelconque {
+    Comparator<Employe> anciennete = new Comparator<Employe>() {
+            public int compare(Employe e1, Employe e2) {
+                return e2.dateEmbauche().compareTo(e1.dateEmbauche());
+            }
+    };
+
+}
+\end{lstlisting}
+
+
+
+Une fois défini, le \texttt{Comparator} pourra être passé en paramètre de la méthode \texttt{sort} de \texttt{Collection} comme décrit ci-dessous.
+
+\begin{center}
+
+\begin{tabular}{|r|l|}
+\hline
+static
+<T> void
+	& sort(List<T> list, Comparator<? super T> c)  \\
+        &~~  
+          Sorts the specified list according to the order induced by the specified comparator.\\
+ \hline
+ 
+ \end{tabular}
+ \end{center}
+
+
+
+~\\ \question Écrivez un \texttt{Comparator} d'\texttt{Entry} (qui correspond au couple (nom, temps cumulés)). Copiez ces couples dans une \texttt{ArrayList} et triez là à l'aide de la méthode \texttt{sort} de \texttt{Collections} et du comparator. Écrivez le code qui permet maintenant d'afficher le classement sous la forme:
+
+\begin{verbatim}
+[rang] nom : temps cumulés
+\end{verbatim}
+
+
+\begin{correction}
+{\color{red}
+\begin{lstlisting}[language=Java]
+        List<Entry<String, Temps>> liste = new ArrayList<Entry<String,Temps>>(tempsCumules.entrySet());
+        
+        Comparator<Entry<String, Temps>> comp = new Comparator<Entry<String,Temps>>() {
+            @Override
+            public int compare(Entry<String, Temps> o1, Entry<String, Temps> o2) {
+                return o1.getValue().compareTo(o2.getValue());
+            }
+        };
+        
+        Collections.sort(liste, comp);
+        
+        for(int i = 0; i < liste.size(); i++){
+        	  System.out.println("["+(i+1)+"]"+" "+liste.get(i).getKey()+" : "+liste.get(i).getValue());
+        }
+
+\end{lstlisting}
+} 
+\end{correction}
+
+
+\end{document}
+
