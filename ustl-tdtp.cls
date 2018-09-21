@@ -27,7 +27,7 @@
 
 \NeedsTeXFormat{LaTeX2e}
 
-\ProvidesClass{ens-ustl}[\filedate%
+\ProvidesClass{ustl-tdtp}[\filedate%
 \space LaTeX2e document class^^J%
 \space ==========(\fileversion\space B. BEAUFILS, S. PICAULT, LIFL)==========]
 
