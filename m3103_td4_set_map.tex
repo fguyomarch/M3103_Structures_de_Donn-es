@@ -39,39 +39,39 @@ Quelques méthodes de cette interface:
 \begin{tabular}{|r|l|}
 \hline
 boolean & add(E o)\\
-&~~ajoute l'élément spécifié au sein de l'objet Set, s'il n'est pas déjà présent\\
+&~~ajoute l'élément spécifié au sein de l'objet \texttt{Set}, s'il n'est pas déjà présent\\
 
 \hline
 boolean & addAll(Collection<E> c)\\
-&~~ajoute tous les éléments de la collection spécifiée au sein de l'objet Set, s'ils ne sont pas déjà présents\\
+&~~ajoute tous les éléments de la collection spécifiée au sein de l'objet \texttt{Set}, s'ils ne sont pas déjà présents\\
 
 \hline
-  boolean &isEmpty()\\
-&~~retourne true si l'ensemble ne contient aucun élément\\
+  boolean & isEmpty()\\
+&~~retourne \texttt{true} si l'ensemble ne contient aucun élément\\
 
  \hline
- boolean& contains(Object o)\\
-&~~retourne true si l'élément spécifié est contenu dans l'objet Set\\
+ boolean & contains(Object o)\\
+&~~retourne \texttt{true} si l'élément spécifié est contenu dans l'objet \texttt{Set}\\
 
 \hline
- boolean &containsAll(Collection<?> c)\\
-&~~retourne true si l'objet Set contient tous les éléments de la collection spécifiée\\
+ boolean & containsAll(Collection<?> c)\\
+&~~retourne \texttt{true} si l'objet \texttt{Set} contient tous les éléments de la collection spécifiée\\
 
 \hline
  Iterator<E> & iterator()\\
 &~~retourne un itérateur sur les éléments de l'ensemble\\
 \hline
- boolean &remove(Object o)\\
-&~~supprime l'élément spécifié de la collection Set, s'il est présent\\
+ boolean & remove(Object o)\\
+&~~supprime l'élément spécifié de la collection, s'il est présent\\
 
 \hline
- boolean &removeAll(Collection<?> c)\\
-&~~supprime tous les éléments contenus dans la collection spécifiée, de l'objet Set, s'ils y sont présents\\
+ boolean & removeAll(Collection<?> c)\\
+&~~supprime tous les éléments contenus dans la collection spécifiée, de l'objet \texttt{Set}, s'ils y sont présents\\
 \hline
- boolean &retainAll(Collection<?> c)\\
-&~~retient seulement les éléments de l'objet Set, qui sont contenus dans la collection spécifiée\\
+ boolean & retainAll(Collection<?> c)\\
+&~~retient seulement les éléments de l'objet \texttt{Set}, qui sont contenus dans la collection spécifiée\\
 \hline
- int& size()\\
+ int & size()\\
 &~~retourne le nombre d'éléments de l'ensemble\\
 
 \hline
@@ -127,14 +127,14 @@ Voici un petit rappel de la javadoc de Iterator<E> qui peut servir :
  \begin{center}
 \begin{tabular}{|r|l|}
 \hline
- boolean	&hasNext()  \\
-         & ~~ Returns true if the iteration has more elements.  \\
+ boolean & hasNext()  \\
+         & ~~ Retourne \texttt{true} si l'itération a encore des éléments.  \\
 \hline
- E	&next()  \\
-          &~~ Returns the next element in the iteration.  \\
+ E & next()  \\
+          & ~~ Retourne le prochain élément de l'itération.  \\
 \hline
- void&	remove()  \\
-        & ~~ Removes from the underlying collection the last element returned by this iterator (optional operation).  \\
+ void &	remove()  \\
+        & ~~ Retire de la collection sous-jacente, le dernier élément retourné par cet itérateur (opération optionnelle).\\
 
 
 \hline
