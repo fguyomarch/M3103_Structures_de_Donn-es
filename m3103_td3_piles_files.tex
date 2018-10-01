@@ -35,7 +35,7 @@ La pile est une structure de type LIFO (Last In, First Out), on accède uniqueme
 
 \begin{itemize}
 \item \texttt{void push} : ajoute un élément au sommet de la pile. Cette méthode soulève une exception (\texttt{IllegalStateException}) si la pile est pleine. 
-\item \texttt{Truc pop} : retourne l’objet situé au sommet de la pile et le retire. Cette méthode soulève une exception (\texttt{NoSuchElementException}) si la pile est vide. 
+\item \texttt{Truc pop} : retourne l’objet situé au sommet de la pile et le retire. Si la pile est vide, cette méthode soulève une exception (\texttt{NoSuchElementException}). 
 \item \texttt{boolean isEmpty} : teste si la pile est vide (retourne un booléen)
 \item \texttt{boolean isFull} : teste si la pile est pleine (retourne un booléen)
 \item \texttt{Truc peek} : retourne l'objet situé au sommet de la pile
@@ -171,7 +171,7 @@ boolean verifDelim(String s){
 
 \question En vous inspirant des actions réalisées sur les compteurs, écrivez la méthode \texttt{boolean verifDelimStack(String s)} qui réalise vérification de délimiteurs à partir d'une pile. Vous utiliserez la classe \texttt{Pile} écrite en Section~\ref{implem}, en remplaçant le type Truc par le type adéquat.
 
-\question Bonus. Modifiez votre algorithme de manière à afficher les indices des caractères qui posent problème, par exemple lorsqu'il manque un délimiteur fermant ou qu'il ne s'agit pas du délimiteur fermant correspondant au délimiteur ouvrant.
+\question Modifiez votre algorithme de manière à afficher les indices des caractères qui posent problème, par exemple lorsqu'il manque un délimiteur fermant ou qu'il ne s'agit pas du délimiteur fermant correspondant au délimiteur ouvrant.
 
 \begin{correction}
 {\color{red}

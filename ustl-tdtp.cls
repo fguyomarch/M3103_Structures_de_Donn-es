@@ -68,10 +68,10 @@
 \ProcessOptions
 
 \ifcorrections
-\ClassWarningNoLine{ens-ustl}{%
+\ClassWarningNoLine{ustl-tdtp}{%
     Avec les corrections}
 \else
-\ClassWarningNoLine{ens-ustl}{%
+\ClassWarningNoLine{ustl-tdtp}{%
     Sans les corrections}
 \fi
 
@@ -92,7 +92,7 @@
 %\RequirePackage[utf8]{inputenc}
 \RequirePackage[T1]{fontenc}
 \RequirePackage{fontspec}
-\RequirePackage[frenchb]{babel}
+\RequirePackage[french]{babel}
 %\RequirePackage{french}
 \RequirePackage{color}
 \RequirePackage[a4paper]{geometry}
