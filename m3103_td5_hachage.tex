@@ -1,4 +1,4 @@
-\documentclass[iutinfo, a4paper, nocorrection, 10pt]{ustl-tdtp}
+\documentclass[a4paper, 10pt]{ustl-tdtp}
 %\usepackage[utf8]{inputenc}  
 %\usepackage[T1]{fontenc}
 \usepackage{fontspec}
@@ -18,7 +18,7 @@
 %\enseignant{}
 
 %\includeversion{solution}
-%\excludeversion{solution}
+\excludeversion{solution}
 
 \lstset{
     breaklines=true
@@ -147,35 +147,6 @@ On supprime la valeur en la remplaçant par une valeur du
 }
 \end{solution}
 
-~\\ \textbf{Question 5:} Programmez les algorithmes d'insertion et de suppression dans la table de hachage en adressage ouvert (dans le cas du sondage linéaire).
-
-\begin{solution}
-{\color{red}
-\begin{lstlisting}[language=Java]
-private int next(int i){
-    return i==table.length-1?0:i+1;
-}
-
-public boolean add(E e){
-    int indexPrimaire = e.hashCode() \% table.length;
-    int i = indexPrimaire;
-    while(table[i]!=null 
-           && !table[i].equals(e)
-           && next(i)!=indexPrimaire){
-        i=next(i);
-    }
-    if(table[i]!=null){
-        if(table[i].equals(e))
-            return false;
-        throw new IllegalStateException();
-    }
-    table[i] = e;
-    return true;
-}
-\end{lstlisting}
-}
-\end{solution}
-
 
 \subsection*{Exercice 2}
 
@@ -231,6 +202,62 @@ public boolean add(E e){
 }
 \end{solution}
 
+\subsection*{Exercice 3}
+
+~\\ \textbf{Question 1:} Quels seraient les attributs d'une classe
+implémentant un ensemble (\texttt{Set<E>}) grâce à une table de hachage
+en adressage ouvert ?
+\begin{solution}
+{\color{red}
+\begin{lstlisting}[language=Java]
+public class MyHashSet<E> implements Set<E>{
+    private E[] tab; // container of elements
+    private int n; //number of elements
+}
+\end{lstlisting}
+}
+\end{solution}
+
+~\\ \textbf{Question 2:} Quel serait le problème si nous voulons faire
+un ensemble contenant des valeurs de type \texttt{int}  ou
+\texttt{double}  ?
+
+\begin{solution}
+{\color{red}
+Il faudrait considérer une valeur pour coder un emplacement vide dans
+le tableau (par exemple : \texttt{Integer.MAX_VALUE} et \texttt{Double.MAX_VALUE}).
+}
+\end{solution}
+
+
+~\\ \textbf{Question 3:} Programmez les algorithmes d'insertion et de suppression dans la table de hachage en adressage ouvert (dans le cas du sondage linéaire).
+
+\begin{solution}
+{\color{red}
+\begin{lstlisting}[language=Java]
+private int next(int i){
+    return i==table.length-1?0:i+1;
+}
+
+public boolean add(E e){
+    int indexPrimaire = e.hashCode() \% table.length;
+    int i = indexPrimaire;
+    while(table[i]!=null 
+           && !table[i].equals(e)
+           && next(i)!=indexPrimaire){
+        i=next(i);
+    }
+    if(table[i]!=null){
+        if(table[i].equals(e))
+            return false;
+        throw new IllegalStateException();
+    }
+    table[i] = e;
+    return true;
+}
+\end{lstlisting}
+}
+\end{solution}
 
 \end{document}
 

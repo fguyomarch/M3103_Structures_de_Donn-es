@@ -43,15 +43,15 @@ l'ensemble \texttt{set1} est inclus dans l'ensemble \texttt{set2} sans utiliser 
 
 \section{Implémentation de l'interface \texttt{SortedSet}}
 
-\question Créez une classe \texttt{SortedArraySet<E>} qui implémente \texttt{Set}. Nous choisissons pour celle-ci comme conteneur, un tableau trié, avec comme attributs additionnels, un entier désignant le nombre d'élément de notre collection, ainsi qu'une référence \texttt{comparator}\footnote{\texttt{comparator} sera \texttt{null} si les éléments sont triés suivant leur ordre naturel} sur un \texttt{Comparator}\footnote{Le type exact est \texttt{Comparator<? super E>}.}. Cette référence doit être définie comme \texttt{final}.
+\question Créez une classe \texttt{SortedArraySet<E>} qui implémente \texttt{SortedSet}. Nous choisissons pour celle-ci comme conteneur, un tableau trié, avec comme attributs additionnels, un entier désignant le nombre d'élément de notre collection, ainsi qu'une référence \texttt{comparator}\footnote{\texttt{comparator} sera \texttt{null} si les éléments sont triés suivant leur ordre naturel} sur un \texttt{Comparator}\footnote{Le type exact est \texttt{Comparator<? super E>}.}. Cette référence doit être définie comme \texttt{final}. Le tableau aura une taille pas défaut de 16.
 
 ~\\ \question Ajoutez les constructeurs suivants: \texttt{SortedArraySet<E>()}, 
 \texttt{SortedArraySet<E>(Comparator<? super E> comparator)}, 
 \texttt{SortedArraySet<E>(Collection<? extends E) collection)} 
 
-~\\ \question Programmez une méthode \texttt{compare(E e1, E e2)} qui compare les deux éléments passés en paramètre. Cette méthode qui respecte la convention usuelle du Java pour les comparaisons, utilise le \texttt{comparator} s'il n'est pas \texttt{null}, sinon elle utilise l'ordre naturel des éléments. Si aucune de ces deux possibilités n'est disponible, la méthode soulève une exception.
+~\\ \question Programmez une méthode \texttt{compare(E e1, E e2)} qui compare les deux éléments passés en paramètre. Cette méthode qui respecte la convention usuelle du Java pour les comparaisons, utilise le \texttt{comparator} s'il n'est pas \texttt{null}, sinon elle utilise l'ordre naturel des éléments. Si aucune de ces deux possibilités n'est disponible, la méthode soulève une exception de type \texttt{ClassCastException}.
 
-~\\ \question Programmez les méthodes \texttt{isEmpty},  \texttt{size} et \texttt{clone}.
+~\\ \question Programmez les méthodes \texttt{isEmpty},  \texttt{size} et \texttt{clone}. Après avoir programmé \texttt{clone}, vous pouvez déclarer votre classe comme \texttt{Clonable}.
 
 ~\\ \question Programmez une méthode privée\footnote{Pourquoi faut-il absolument qu'elle soit privée ?} \texttt{indexOf} qui retourne l'index du premier élément supérieur ou égal à l'élément passé en paramètre (et pas -1 s'il n'est pas présent !). Cette méthode tirera bien évidemment parti du fait que le tableau est trié\footnote{Vive le retour de la dichotomie...} ! 
 
